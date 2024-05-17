@@ -147,7 +147,7 @@ public class Graphe {
      * @return le degré du sommet {@code s}
      */
     public int degre(Sommet s) {
-        throw new RuntimeException("Méthode à implémenter");
+        return s.getVoisins().size();
     }
 
     /**
