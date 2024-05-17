@@ -99,7 +99,16 @@ public class Graphe {
      * @return l'ensemble d'arêtes du graphe sous forme d'ensemble de paires de sommets
      */
     public Set<Set<Sommet>> getAretes() {
-        throw new RuntimeException("Méthode à implémenter");
+        Set<Set<Sommet>> aretes = new HashSet<>();
+        for (Sommet s : sommets) {
+            for (Sommet t : s.getVoisins()) {
+                Set<Sommet> arete = new HashSet<>();
+                arete.add(s);
+                arete.add(t);
+                aretes.add(arete);
+            }
+        }
+        return aretes;
     }
 
     /**
@@ -145,7 +154,7 @@ public class Graphe {
      * @return true si et seulement si this est complet.
      */
     public boolean estComplet() {
-        throw new RuntimeException("Méthode à implémenter");
+        return getNbAretes() == getNbSommets() * (getNbSommets() - 1) / 2; // si le graphe est complet, il a n(n-1)/2 arêtes
     }
 
     /**
