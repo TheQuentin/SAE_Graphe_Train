@@ -49,6 +49,13 @@ public class Sommet {
         throw new RuntimeException("Méthode à implémenter");
     }
 
+    public Sommet (int i){
+        this.i = i;
+        this.surcout = 0;
+        this.nbPointsVictoire = 0;
+        this.joueurs = new HashSet<>();
+        this.voisins = new HashSet<>();
+    }
     /**
      * Constructeur par recopie.
      * @param s
