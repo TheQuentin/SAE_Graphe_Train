@@ -51,6 +51,11 @@ public class Sommet {
         this.nbPointsVictoire = tuile.getNbPointsVictoire();
         this.joueurs = new HashSet<>();
         this.voisins = new HashSet<>();
+        for (int i = 0; i < jeu.getJoueurs().size(); i++) {
+            if (tuile.hasRail(jeu.getJoueurs().get(i))) {
+                this.joueurs.add(i);
+            }
+        }
     }
 
     public Sommet (int i){
@@ -101,7 +106,7 @@ public class Sommet {
     }
 
     public boolean estVoisin(Sommet sommet) {
-        return false;
+        throw new RuntimeException("Méthode à implémenter");
     }
 
     @Override
