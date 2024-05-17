@@ -219,11 +219,23 @@ public class Graphe {
     }
 
     public void ajouterArete(Sommet s, Sommet t) {
-        throw new RuntimeException("Méthode à implémenter");
+        if (s.equals(t)) {
+            throw new IllegalArgumentException("Un sommet ne peut pas être relié à lui-même");
+        }
+        if(!s.estVoisin(t)) {
+            s.ajouterVoisin(t);
+            t.ajouterVoisin(s);
+        }
     }
 
     public void supprimerArete(Sommet s, Sommet t) {
-        throw new RuntimeException("Méthode à implémenter");
+        if (s.equals(t)) {
+            throw new IllegalArgumentException("Un sommet ne peut pas être relié à lui-même");
+        }
+        if(s.estVoisin(t)){
+            s.getVoisins().remove(t);
+            t.getVoisins().remove(s);
+        }
     }
 
     /**
