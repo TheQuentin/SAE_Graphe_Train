@@ -168,7 +168,13 @@ public class Graphe {
      * @return true si et seulement si this est un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean estCycle() {
-        throw new RuntimeException("Méthode à implémenter");
+        //si il possède un sommet de degré 1
+        for (Sommet s : sommets) {
+            if (degre(s) == 1) {
+                return false; // c'est pas un cycle
+            }
+        }
+        return getNbAretes() > getNbSommets();
     }
 
     /**
@@ -176,13 +182,19 @@ public class Graphe {
      * et que le graphe vide est un arbre.
      */
     public boolean estForet() {
-        throw new RuntimeException("Méthode à implémenter");
+        if (sommets.isEmpty()) {
+            return true;
+        }
+        return getNbAretes() == getNbSommets() - 1;
     }
 
     /**
      * @return true si et seulement si this a au moins un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean possedeUnCycle() {
+        if (sommets.isEmpty()) {
+            return false;
+        }
         return getNbAretes() > getNbSommets()-1;
     }
 
