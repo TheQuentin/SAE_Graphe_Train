@@ -261,7 +261,10 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
     public int getDistance(Sommet depart, Sommet arrivee) {
-        throw new RuntimeException("Méthode à implémenter");
+        int distance = 0;
+
+
+        return distance;
     }
 
     /**
