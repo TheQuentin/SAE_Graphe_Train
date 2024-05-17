@@ -1,6 +1,8 @@
 package fr.umontpellier.iut.graphes;
 
+import java.util.HashSet;
 import java.util.*;
+
 
 /**
  * Graphe simple non-orienté pondéré représentant le plateau du jeu.
@@ -104,7 +106,7 @@ public class Graphe {
      * @return le nombre d'arêtes du graphe
      */
     public int getNbAretes() {
-        throw new RuntimeException("Méthode à implémenter");
+        return getAretes().size();
     }
 
     /**
@@ -113,7 +115,11 @@ public class Graphe {
      * @param i l'entier correspondant à l'indice du sommet à ajouter dans le graphe
      */
     public boolean ajouterSommet(int i) {
-        throw new RuntimeException("Méthode à implémenter");
+        if(getSommet(i) != null){
+            return false;
+        }
+        Sommet sommetAdd = new Sommet.SommetBuilder().setIndice(i).createSommet();
+        return true;
     }
 
     /**
