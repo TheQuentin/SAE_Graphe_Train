@@ -118,8 +118,8 @@ public class Graphe {
         if(getSommet(i) != null){
             return false;
         }
-        Sommet sommetAdd = new Sommet.SommetBuilder().setIndice(i).createSommet();
-        return true;
+        Sommet sommetAdd = new Sommet(i);
+        return sommets.add(sommetAdd);
     }
 
     /**
