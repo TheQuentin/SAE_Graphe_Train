@@ -46,7 +46,11 @@ public class Sommet {
 
 
     public Sommet(Tuile tuile, Jeu jeu) {
-        throw new RuntimeException("Méthode à implémenter");
+        this.i = jeu.getTuiles().indexOf(tuile);
+        this.surcout = tuile.getSurcout();
+        this.nbPointsVictoire = tuile.getNbPointsVictoire();
+        this.joueurs = new HashSet<>();
+        this.voisins = new HashSet<>();
     }
 
     public Sommet (int i){
@@ -97,7 +101,7 @@ public class Sommet {
     }
 
     public boolean estVoisin(Sommet sommet) {
-        throw new RuntimeException("Méthode à implémenter");
+        return false;
     }
 
     @Override
