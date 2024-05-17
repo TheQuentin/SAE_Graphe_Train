@@ -401,13 +401,33 @@ public class Jeu implements Runnable {
         return joueurs;
     }
 
+    public Graphe getGraphe(){
+        //sommets
+        Map<Tuile, Sommet> map = new HashMap<>();
+        for (Tuile tuile : tuiles) {
+            if(tuile.estSommet()) {
+                map.put(tuile, new Sommet(tuile, this));
+            }
+        }
+
+        //aretes
+        for (Tuile tuile : tuiles) {
+            if(tuile.estSommet()) {
+                Sommet sommet = map.get(tuile);
+                for (Tuile tuileVoisine : tuile.getVoisines()) {
+                    if(tuileVoisine.estSommet()) {
+                        sommet.ajouterVoisin(map.get(tuileVoisine));
+                    }
+                }
+            }
+        }
+        Set<Sommet> sommets = new HashSet<>(map.values());
+        return new Graphe(sommets);
+    }
+
     /**
      * @return le graphe des tuiles du jeu (sans les tuiles Mer)
      */
-    public Graphe getGraphe() {
-        throw new RuntimeException("Méthode à implémenter");
-    }
-
     /**
      * @param joueur
      * @return le sous-graphe des tuiles du jeu sur lesquelles le joueur a posé des

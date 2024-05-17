@@ -16,4 +16,8 @@ public class TuileMer extends Tuile {
     public boolean peutEtrePositionDepart() {
         return false;
     }
+
+    public boolean estSommet(){
+        return false;
+    }
 }

@@ -102,7 +102,8 @@ public class Sommet {
     }
 
     public void ajouterVoisin(Sommet voisin) {
-        throw new RuntimeException("Méthode à implémenter");
+        this.voisins.add(voisin);
+        voisin.voisins.add(this);
     }
 
     public boolean estVoisin(Sommet sommet) {
