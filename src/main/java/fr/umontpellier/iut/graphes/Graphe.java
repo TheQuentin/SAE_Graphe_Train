@@ -161,20 +161,33 @@ public class Graphe {
      * @return true si et seulement si this est une chaîne. On considère que le graphe vide est une chaîne.
      */
     public boolean estChaine() {
-        throw new RuntimeException("Méthode à implémenter");
+        // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.
+        int nbSommetsImpairs = 0;
+        for (Sommet s : sommets) {
+            if (degre(s) % 2 == 1) {
+                nbSommetsImpairs++;
+            }
+        }
+        return nbSommetsImpairs == 0 || nbSommetsImpairs == 2;
+
     }
 
     /**
      * @return true si et seulement si this est un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean estCycle() {
-        //si il possède un sommet de degré 1
+        if(sommets.isEmpty()){
+            return false;
+        }
+        if(getNbAretes() != getNbSommets()){
+            return false;
+        }
         for (Sommet s : sommets) {
-            if (degre(s) == 1) {
-                return false; // c'est pas un cycle
+            if (degre(s) != 2) {
+                return false;
             }
         }
-        return getNbAretes() > getNbSommets();
+        return true;
     }
 
     /**
