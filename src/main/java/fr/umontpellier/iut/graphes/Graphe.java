@@ -168,7 +168,7 @@ public class Graphe {
      * @return true si et seulement si this est un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean estCycle() {
-        return getNbAretes() > getNbSommets()-1;
+        throw new RuntimeException("Méthode à implémenter");
     }
 
     /**
@@ -183,7 +183,7 @@ public class Graphe {
      * @return true si et seulement si this a au moins un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean possedeUnCycle() {
-        throw new RuntimeException("Méthode à implémenter");
+        return getNbAretes() > getNbSommets()-1;
     }
 
     /**
