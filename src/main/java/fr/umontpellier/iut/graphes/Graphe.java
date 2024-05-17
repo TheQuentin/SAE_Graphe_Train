@@ -198,7 +198,7 @@ public class Graphe {
         if (sommets.isEmpty()) {
             return true;
         }
-        return getNbAretes() == getNbSommets() - 1;
+        return (!possedeUnCycle());
     }
 
     /**
