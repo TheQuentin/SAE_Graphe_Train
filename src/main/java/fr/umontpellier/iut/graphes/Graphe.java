@@ -301,7 +301,7 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre l'ensemble de depart et le sommet d'arrivée
      * pré-requis : l'ensemble de départ et le sommet d'arrivée sont inclus dans l'ensemble des sommets de this
      */
-    public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra) //fait mais pas testé
+    public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra)
         int distance = 0;
 
         return distance;
@@ -310,34 +310,31 @@ public class Graphe {
     /**
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
-    public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra) //fait mais pas testé
+    public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra)
         HashSet<Sommet> sommets = new HashSet<>(this.sommets);
         int [] distance = new int[getNbSommets()];
         boolean [] vu = new boolean[getNbSommets()];
         int distanceMin = 0;
 
         for (Sommet s : sommets) {
-            distance[s.getIndice()] = Integer.MAX_VALUE;
+            distances.put(s, Integer.MAX_VALUE);
         }
-        distance[depart.getIndice()] = 0;
-        for (Sommet voisin : depart.getVoisins()) { // pour chaque voisin du sommet de départ
-            distance[voisin.getIndice()] = depart.getSurcout();
-        }
-        vu[depart.getIndice()] = true;
+        distances.put(depart, 0);
 
-        while (!vu[arrivee.getIndice()]) { // tant que l'arrivée n'est pas visitée
-            int min = Integer.MAX_VALUE;
-            int indiceMin = -1;
+        while (!sommetsNonVus.isEmpty()) {
+            Sommet s = sommetsNonVus.stream().min(Comparator.comparing(distances::get)).get();
+            sommetsNonVus.remove(s);
 
-            for (Sommet s : sommets) {
-                if (!vu[s.getIndice()] && distance[s.getIndice()] < min) { // si le sommet n'est pas visité et que la distance est inférieure à min
-                    min = distance[s.getIndice()];
-                    indiceMin = s.getIndice();
+            for (Sommet t : s.getVoisins()) {
+                if (sommetsNonVus.contains(t)) {
+                    int distance = distances.get(s) + 1;
+                    if (distance < distances.get(t)) {
+                        distances.put(t, distance);
+                    }
                 }
             }
-            vu[indiceMin] = true;
         }
-        return distance[arrivee.getIndice()];
+        return distances.get(arrivee);
     }
 
     /**
