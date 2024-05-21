@@ -21,7 +21,7 @@ public class Graphe {
     /**
      * Construit un graphe à n sommets 0..n-1 sans arêtes
      */
-    public Graphe(int n) {
+    public Graphe(int n) { //fait mais pas testé
         this.sommets = new HashSet<>();
         ajouterSommet(n);        
     }
@@ -29,7 +29,7 @@ public class Graphe {
     /**
      * Construit un graphe vide
      */
-    public Graphe() {
+    public Graphe() { //fait mais pas testé
         this.sommets = new HashSet<>();
     }
 
@@ -41,7 +41,7 @@ public class Graphe {
      * @param X les sommets à considérer (on peut supposer que X est inclus dans l'ensemble des sommets de g,
      *          même si en principe ce n'est pas obligatoire)
      */
-    public Graphe(Graphe g, Set<Sommet> X) {
+    public Graphe(Graphe g, Set<Sommet> X) { //fait mais pas testé
         Graphe sousGraphe = new Graphe();
         sommets = X;
         for (Sommet s : X) {
@@ -61,7 +61,7 @@ public class Graphe {
      * correspond à un graphe simple valide dont les degrés correspondent aux éléments de la liste.
      * Pré-requis : on peut supposer que la séquence est triée dans l'ordre croissant.
      */
-    public static boolean sequenceEstGraphe(List<Integer> sequence) {
+    public static boolean sequenceEstGraphe(List<Integer> sequence) { //fait mais pas testé
         List<Integer> sequenceOrdonnee = new ArrayList<>(sequence);
         while (true) {
             Collections.sort(sequenceOrdonnee, Collections.reverseOrder());
@@ -105,7 +105,7 @@ public class Graphe {
      * @param i un entier
      * @return le sommet d'indice {@code i} dans le graphe ou null si le sommet d'indice {@code i} n'existe pas dans this
      */
-    public Sommet getSommet(int i) {
+    public Sommet getSommet(int i) { //fait mais pas testé
         for (Sommet s : sommets) {
             if (s.getIndice() == i) {
                 return s;
@@ -117,21 +117,21 @@ public class Graphe {
     /**
      * @return l'ensemble des sommets du graphe
      */
-    public Set<Sommet> getSommets() {
+    public Set<Sommet> getSommets() { //fait mais pas testé
         return sommets;
     }
 
     /**
      * @return l'ordre du graphe, c'est-à-dire le nombre de sommets
      */
-    public int getNbSommets() {
+    public int getNbSommets() {//fait mais pas testé
         return sommets.size();
     }
 
     /**
      * @return l'ensemble d'arêtes du graphe sous forme d'ensemble de paires de sommets
      */
-    public Set<Set<Sommet>> getAretes() {
+    public Set<Set<Sommet>> getAretes() { //fait mais pas testé
         Set<Set<Sommet>> aretes = new HashSet<>();
         for (Sommet s : sommets) {
             for (Sommet t : s.getVoisins()) {
@@ -147,7 +147,7 @@ public class Graphe {
     /**
      * @return le nombre d'arêtes du graphe
      */
-    public int getNbAretes() {
+    public int getNbAretes() { //fait mais pas testé
         return getAretes().size();
     }
 
@@ -156,7 +156,7 @@ public class Graphe {
      *
      * @param i l'entier correspondant à l'indice du sommet à ajouter dans le graphe
      */
-    public boolean ajouterSommet(int i) {
+    public boolean ajouterSommet(int i) { //fait mais pas testé
         if(getSommet(i) != null){
             return false;
         }
@@ -170,7 +170,7 @@ public class Graphe {
      * @param s le sommet à ajouter
      * @return true si le sommet a été ajouté, false sinon
      */
-    public boolean ajouterSommet(Sommet s) {
+    public boolean ajouterSommet(Sommet s) { //fait mais pas testé
         return sommets.add(s);
     }
 
@@ -179,21 +179,21 @@ public class Graphe {
      *          pré-requis : {@code s} est un sommet de this
      * @return le degré du sommet {@code s}
      */
-    public int degre(Sommet s) {
+    public int degre(Sommet s) { //fait mais pas testé
         return s.getVoisins().size();
     }
 
     /**
      * @return true si et seulement si this est complet.
      */
-    public boolean estComplet() {
+    public boolean estComplet() { //fait mais pas testé
         return getNbAretes() == getNbSommets() * (getNbSommets() - 1) / 2; // si le graphe est complet, il a n(n-1)/2 arêtes
     }
 
     /**
      * @return true si et seulement si this est une chaîne. On considère que le graphe vide est une chaîne.
      */
-    public boolean estChaine() {
+    public boolean estChaine() { //fait mais pas testé
         // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.
         int nbSommetsImpairs = 0;
         for (Sommet s : sommets) {
@@ -208,7 +208,7 @@ public class Graphe {
     /**
      * @return true si et seulement si this est un cycle. On considère que le graphe vide n'est pas un cycle.
      */
-    public boolean estCycle() {
+    public boolean estCycle() { //fait mais pas testé
         if(sommets.isEmpty()){
             return false;
         }
@@ -227,7 +227,7 @@ public class Graphe {
      * @return true si et seulement si this est une forêt. On considère qu'un arbre est une forêt
      * et que le graphe vide est un arbre.
      */
-    public boolean estForet() {
+    public boolean estForet() { //fait mais pas testé
         if (sommets.isEmpty()) {
             return true;
         }
@@ -237,7 +237,7 @@ public class Graphe {
     /**
      * @return true si et seulement si this a au moins un cycle. On considère que le graphe vide n'est pas un cycle.
      */
-    public boolean possedeUnCycle() {
+    public boolean possedeUnCycle() { //fait mais pas testé
         if (sommets.isEmpty()) {
             return false;
         }
@@ -247,7 +247,7 @@ public class Graphe {
     /**
      * @return true si et seulement si this a un isthme
      */
-    public boolean possedeUnIsthme() { //pas fini
+    public boolean possedeUnIsthme() { //pas fini et pas testé
         if (sommets.isEmpty()) {
             return false;
         }
@@ -265,7 +265,7 @@ public class Graphe {
         return false;
     }
 
-    public void ajouterArete(Sommet s, Sommet t) {
+    public void ajouterArete(Sommet s, Sommet t) { //fait mais pas testé
         if (s.equals(t)) {
             throw new IllegalArgumentException("Un sommet ne peut pas être relié à lui-même");
         }
@@ -275,7 +275,7 @@ public class Graphe {
         }
     }
 
-    public void supprimerArete(Sommet s, Sommet t) {
+    public void supprimerArete(Sommet s, Sommet t) { //fait mais pas testé
         if (s.equals(t)) {
             throw new IllegalArgumentException("Un sommet ne peut pas être relié à lui-même");
         }
@@ -356,14 +356,14 @@ public class Graphe {
     /**
      * @return true si et seulement si this est connexe.
      */
-    public boolean estConnexe() {
-        throw new RuntimeException("Méthode à implémenter");
+    public boolean estConnexe() { //fait mais pas testé
+        return getEnsembleClassesConnexite().size() == 1;
     }
 
     /**
      * @return le degré maximum des sommets du graphe
      */
-    public int degreMax() {
+    public int degreMax() { // fait mais pas testé
         int degreMax = 0;
         for (Sommet s : sommets) {
             if (degre(s) > degreMax) {
