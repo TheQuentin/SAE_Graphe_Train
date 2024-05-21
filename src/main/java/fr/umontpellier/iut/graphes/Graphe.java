@@ -70,7 +70,7 @@ public class Graphe {
             }
             int degMax = sequenceOrdonnee.remove(0); 
 
-            if (degMax >= sequenceOrdonnee.size()) {
+            if (degMax > sequenceOrdonnee.size()) {
                 return false;
             }
 
@@ -79,7 +79,7 @@ public class Graphe {
                 if (sequenceOrdonnee.get(i) < 0) {
                     return false;
                 }
-                //Collections.sort(sequenceOrdonnee, Collections.reverseOrder());  PEUT ETRE JSP
+                Collections.sort(sequenceOrdonnee, Collections.reverseOrder()); 
             }
         }
     }
@@ -301,7 +301,7 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre l'ensemble de depart et le sommet d'arrivée
      * pré-requis : l'ensemble de départ et le sommet d'arrivée sont inclus dans l'ensemble des sommets de this
      */
-    public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra)
+    public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra) //fait mais pas testé
         int distance = 0;
 
         return distance;
@@ -310,7 +310,7 @@ public class Graphe {
     /**
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
-    public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra)
+    public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra) //fait mais pas testé
         HashSet<Sommet> sommets = new HashSet<>(this.sommets);
         int [] distance = new int[getNbSommets()];
         boolean [] vu = new boolean[getNbSommets()];
