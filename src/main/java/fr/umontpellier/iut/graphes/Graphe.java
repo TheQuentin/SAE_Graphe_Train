@@ -215,8 +215,22 @@ public class Graphe {
     /**
      * @return true si et seulement si this a un isthme
      */
-    public boolean possedeUnIsthme() {
-        throw new RuntimeException("Méthode à implémenter");
+    public boolean possedeUnIsthme() { //pas fini
+        if (sommets.isEmpty()) {
+            return false;
+        }
+        if (estCycle()) {
+            return false;
+        }
+        if (estChaine()) {
+            return true;
+        }
+        for (Sommet s : sommets) {
+            if (degre(s) == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void ajouterArete(Sommet s, Sommet t) {
