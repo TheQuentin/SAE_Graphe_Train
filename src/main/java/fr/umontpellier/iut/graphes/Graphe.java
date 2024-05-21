@@ -22,14 +22,15 @@ public class Graphe {
      * Construit un graphe à n sommets 0..n-1 sans arêtes
      */
     public Graphe(int n) {
-        throw new RuntimeException("Méthode à implémenter");
+        this.sommets = new HashSet<>();
+        ajouterSommet(n);        
     }
 
     /**
      * Construit un graphe vide
      */
     public Graphe() {
-        throw new RuntimeException("Méthode à implémenter");
+        this.sommets = new HashSet<>();
     }
 
     /**
@@ -317,7 +318,13 @@ public class Graphe {
      * @return le degré maximum des sommets du graphe
      */
     public int degreMax() {
-        throw new RuntimeException("Méthode à implémenter");
+        int degreMax = 0;
+        for (Sommet s : sommets) {
+            if (degre(s) > degreMax) {
+                degreMax = degre(s);
+            }
+        }
+        return degreMax;
     }
 
     /**
