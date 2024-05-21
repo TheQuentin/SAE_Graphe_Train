@@ -42,7 +42,18 @@ public class Graphe {
      *          même si en principe ce n'est pas obligatoire)
      */
     public Graphe(Graphe g, Set<Sommet> X) {
-        throw new RuntimeException("Méthode à implémenter");
+        Graphe sousGraphe = new Graphe();
+        sommets = X;
+        for (Sommet s : X) {
+            sousGraphe.ajouterSommet(s);
+        }
+        for (Sommet s : X) {
+            for (Sommet t : s.getVoisins()) {
+                if (X.contains(t)) {
+                    sousGraphe.ajouterArete(s, t);
+                }
+            }
+        }
     }
 
     /**
@@ -51,9 +62,30 @@ public class Graphe {
      * Pré-requis : on peut supposer que la séquence est triée dans l'ordre croissant.
      */
     public static boolean sequenceEstGraphe(List<Integer> sequence) {
-        throw new RuntimeException("Méthode à implémenter");
+        List<Integer> sequenceOrdonnee = new ArrayList<>(sequence);
+        while (true) {
+            Collections.sort(sequenceOrdonnee, Collections.reverseOrder());
+            if (sequenceOrdonnee.get(0) == 0) {
+                return true;
+            }
+            int degMax = sequenceOrdonnee.remove(0); 
+
+            if (degMax >= sequenceOrdonnee.size()) {
+                return false;
+            }
+
+            for (int i = 0; i < degMax; i++) {
+                sequenceOrdonnee.set(i, sequenceOrdonnee.get(i) - 1);
+                if (sequenceOrdonnee.get(i) < 0) {
+                    return false;
+                }
+                //Collections.sort(sequenceOrdonnee, Collections.reverseOrder());  PEUT ETRE JSP
+            }
+        }
     }
 
+
+    
     /**
      * @param g        le graphe source, qui ne doit pas être modifié
      * @param ensemble un ensemble de sommets
