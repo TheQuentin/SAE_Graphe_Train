@@ -317,32 +317,28 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
     public int getDistance(Sommet depart, Sommet arrivee) { //ne fonctionne pas
-        Set<Sommet> dejaVus = new HashSet<>();
-        Set<Sommet> aTraiter = new HashSet<>();
-        Map<Sommet, Integer> distanceParSommet = new HashMap<>();
+        Map<Sommet, Integer> distances = new HashMap<>();
+        Set<Sommet> sommetsNonVus = new HashSet<>(sommets);
 
         for (Sommet s : sommets) {
-            distanceParSommet.put(s, Integer.MAX_VALUE);
+            distances.put(s, Integer.MAX_VALUE);
         }
-        distanceParSommet.put(depart, 0);
-        aTraiter.add(depart);
+        distances.put(depart, 0);
 
-        while (!aTraiter.isEmpty()) {
-            Sommet s = aTraiter.iterator().next();
-            aTraiter.remove(s);
-            dejaVus.add(s);
-            for (Sommet voisin : s.getVoisins()) {
-                if (!dejaVus.contains(voisin)) {
-                    int distanceVoisin = distanceParSommet.get(s) + 1;
-                    if (distanceVoisin < distanceParSommet.get(voisin)) {
-                        distanceParSommet.put(voisin, distanceVoisin);
-                        aTraiter.add(voisin);
+        while (!sommetsNonVus.isEmpty()) {
+            Sommet s = sommetsNonVus.stream().min(Comparator.comparing(distances::get)).get();
+            sommetsNonVus.remove(s);
+
+            for (Sommet t : s.getVoisins()) {
+                if (sommetsNonVus.contains(t)) {
+                    int distance = distances.get(s) + 1;
+                    if (distance < distances.get(t)) {
+                        distances.put(t, distance);
                     }
                 }
             }
         }
-
-        return distanceParSommet.get(arrivee);
+        return distances.get(arrivee);
     }
 
     /**
