@@ -583,18 +583,22 @@ public class TestPerso {
         Sommet s3 = new Sommet(3);
         Sommet s4 = new Sommet(4);
         Sommet s5 = new Sommet(5);  
+        Sommet s6 = new Sommet(6);
 
         g.ajouterSommet(s3);
         g.ajouterSommet(s2);
         g.ajouterSommet(s1);
         g.ajouterSommet(s4);
         g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
         
         g.ajouterArete(s1, s2);
         g.ajouterArete(s2, s3);
-        g.ajouterArete(s3, s4);
-        g.ajouterArete(s4, s1);
-        g.ajouterArete(s1, s5);
+        g.ajouterArete(s3, s1);
+
+        g.ajouterArete(s4, s5);
+        g.ajouterArete(s5, s6);
+        g.ajouterArete(s6, s4);
 
 
         assertEquals(false, g.estCycle());

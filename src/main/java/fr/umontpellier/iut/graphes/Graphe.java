@@ -1,7 +1,8 @@
 package fr.umontpellier.iut.graphes;
 
-import java.util.HashSet;
 import java.util.*;
+
+import fr.umontpellier.iut.graphes.Sommet.SommetBuilder;
 
 
 /**
@@ -98,8 +99,30 @@ public class Graphe {
      * L'ensemble de joueurs du nouveau sommet sera l'union des ensembles de joueurs des sommets fusionnés.
      */
     public static Graphe fusionnerEnsembleSommets(Graphe g, Set<Sommet> ensemble) {
-        throw new RuntimeException("Méthode à implémenter");
-    }
+        Graphe grapheFusionne = new Graphe();
+        int surcout = 0; int nbPointsVictoire = 0;
+        int indiceMin = Integer.MAX_VALUE;
+        Set<Integer> ensembleJoueurs = new HashSet<>(); //on empeche les doublons
+
+        for (Sommet sommet : ensemble){
+            if (sommet.getIndice() < indiceMin){
+                indiceMin = sommet.getIndice();
+            }
+            surcout += sommet.getSurcout();
+            nbPointsVictoire += sommet.getNbPointsVictoire();
+            ensembleJoueurs.addAll(sommet.getJoueurs());
+        }
+
+        SommetBuilder sommetBuilder = new SommetBuilder();
+        sommetBuilder.setIndice(indiceMin);
+        sommetBuilder.setSurcout(surcout);
+        sommetBuilder.setNbPointsVictoire(nbPointsVictoire);
+        sommetBuilder.setJoueurs(ensembleJoueurs);
+        Sommet sommetFusionne = sommetBuilder.createSommet();
+
+        return grapheFusionne; // A FINIR !!!
+
+        }
 
     /**
      * @param i un entier
@@ -195,10 +218,13 @@ public class Graphe {
      * @return true si et seulement si this est une chaîne. On considère que le graphe vide est une chaîne.
      */
     public boolean estChaine() { //fait mais pas testé
-        // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.
+        if (sommets.isEmpty()) {
+            return true;
+        }
         if (possedeUnCycle()) {
             return false;
         }
+         // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.)
         int nbSommetsImpairs = 0;
         for (Sommet s : sommets) {
             if (degre(s) % 2 == 1) {
@@ -213,10 +239,13 @@ public class Graphe {
      * @return true si et seulement si this est un cycle. On considère que le graphe vide n'est pas un cycle.
      */
     public boolean estCycle() { //fait mais pas testé
-        if(sommets.isEmpty()){
+        if (sommets.isEmpty()) {
             return false;
         }
-        if(getNbAretes() != getNbSommets()){
+        if (getNbAretes() != getNbSommets()) {
+            return false;
+        }
+        if (!estConnexe()) {
             return false;
         }
         for (Sommet s : sommets) {
@@ -226,7 +255,6 @@ public class Graphe {
         }
         return true;
     }
-
     /**
      * @return true si et seulement si this est une forêt. On considère qu'un arbre est une forêt
      * et que le graphe vide est un arbre.
@@ -235,7 +263,7 @@ public class Graphe {
         if (sommets.isEmpty()) {
             return true;
         }
-        return (!possedeUnCycle()); //A REVOIR !!!
+        return (!estCycle() && estConnexe());
     }
 
     /**
@@ -314,30 +342,31 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
     public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra)
-        HashSet<Sommet> sommets = new HashSet<>(this.sommets);
-        int [] distance = new int[getNbSommets()];
-        boolean [] vu = new boolean[getNbSommets()];
-        int distanceMin = 0;
+        // HashSet<Sommet> sommets = new HashSet<>(this.sommets);
+        // int [] distance = new int[getNbSommets()];
+        // boolean [] vu = new boolean[getNbSommets()];
+        // int distanceMin = 0;
 
-        for (Sommet s : sommets) {
-            distances.put(s, Integer.MAX_VALUE);
-        }
-        distances.put(depart, 0);
+        // for (Sommet s : sommets) {
+        //     distances.put(s, Integer.MAX_VALUE);
+        // }
+        // distances.put(depart, 0);
 
-        while (!sommetsNonVus.isEmpty()) {
-            Sommet s = sommetsNonVus.stream().min(Comparator.comparing(distances::get)).get();
-            sommetsNonVus.remove(s);
+        // while (!sommetsNonVus.isEmpty()) {
+        //     Sommet s = sommetsNonVus.stream().min(Comparator.comparing(distances::get)).get();
+        //     sommetsNonVus.remove(s);
 
-            for (Sommet t : s.getVoisins()) {
-                if (sommetsNonVus.contains(t)) {
-                    int distance = distances.get(s) + 1;
-                    if (distance < distances.get(t)) {
-                        distances.put(t, distance);
-                    }
-                }
-            }
-        }
-        return distances.get(arrivee);
+        //     for (Sommet t : s.getVoisins()) {
+        //         if (sommetsNonVus.contains(t)) {
+        //             int distance = distances.get(s) + 1;
+        //             if (distance < distances.get(t)) {
+        //                 distances.put(t, distance);
+        //             }
+        //         }
+        //     }
+        // }
+        // return distances.get(arrivee);
+        throw new RuntimeException("Méthode à implémenter");
     }
 
     /**
