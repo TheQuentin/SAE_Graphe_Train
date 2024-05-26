@@ -15,6 +15,7 @@ import fr.umontpellier.iut.graphes.Sommet.SommetBuilder;
 public class Graphe {
     private final Set<Sommet> sommets;
 
+
     public Graphe(Set<Sommet> sommets) {
         this.sommets = sommets;
     }
@@ -24,7 +25,7 @@ public class Graphe {
      */
     public Graphe(int n) { //fait mais pas testé
         this.sommets = new HashSet<>();
-        ajouterSommet(n);        
+        ajouterSommet(n);
     }
 
     /**
@@ -335,6 +336,10 @@ public class Graphe {
     public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra)
         int distance = 0;
 
+        for (Sommet s : depart) {
+            distance = Math.min(distance, getDistance(s, arrivee));
+        }
+
         return distance;
     }
 
@@ -342,31 +347,34 @@ public class Graphe {
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
     public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra)
-        // HashSet<Sommet> sommets = new HashSet<>(this.sommets);
-        // int [] distance = new int[getNbSommets()];
-        // boolean [] vu = new boolean[getNbSommets()];
-        // int distanceMin = 0;
+       ArrayList<Sommet> sommetsNonVisites = new ArrayList<>(sommets);
+         Map<Sommet, Integer> distance = new HashMap<>();
+            Map<Sommet, Sommet> predecesseur = new HashMap<>();
+            for (Sommet s : sommets) {
+                distance.put(s, Integer.MAX_VALUE);
+                predecesseur.put(s, null);
+            }
+            distance.put(depart, 0);
 
-        // for (Sommet s : sommets) {
-        //     distances.put(s, Integer.MAX_VALUE);
-        // }
-        // distances.put(depart, 0);
-
-        // while (!sommetsNonVus.isEmpty()) {
-        //     Sommet s = sommetsNonVus.stream().min(Comparator.comparing(distances::get)).get();
-        //     sommetsNonVus.remove(s);
-
-        //     for (Sommet t : s.getVoisins()) {
-        //         if (sommetsNonVus.contains(t)) {
-        //             int distance = distances.get(s) + 1;
-        //             if (distance < distances.get(t)) {
-        //                 distances.put(t, distance);
-        //             }
-        //         }
-        //     }
-        // }
-        // return distances.get(arrivee);
-        throw new RuntimeException("Méthode à implémenter");
+            while (!sommetsNonVisites.isEmpty()) {
+                Sommet s = sommetsNonVisites.get(0);
+                for (Sommet t : sommetsNonVisites) {
+                    if (distance.get(t) < distance.get(s)) {
+                        s = t;
+                    }
+                }
+                sommetsNonVisites.remove(s);
+                for (Sommet t : s.getVoisins()) {
+                    if (sommetsNonVisites.contains(t)) {
+                        int surcout = distance.get(s) + s.getSurcout();
+                        if (surcout < distance.get(t)) {
+                            distance.put(t, surcout);
+                            predecesseur.put(t, s);
+                        }
+                    }
+                }
+            }
+            return distance.get(arrivee);
     }
 
     /**

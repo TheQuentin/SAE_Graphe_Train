@@ -51,6 +51,7 @@ public class Sommet {
         this.nbPointsVictoire = tuile.getNbPointsVictoire();
         this.joueurs = new HashSet<>();
         this.voisins = new HashSet<>();
+
         for (int i = 0; i < jeu.getJoueurs().size(); i++) {
             if (tuile.hasRail(jeu.getJoueurs().get(i))) {
                 this.joueurs.add(i);
@@ -58,6 +59,7 @@ public class Sommet {
         }
     }
 
+    //Constructeur supplémentaire
     public Sommet (int i){
         this.i = i;
         this.surcout = 0;
@@ -65,6 +67,7 @@ public class Sommet {
         this.joueurs = new HashSet<>();
         this.voisins = new HashSet<>();
     }
+
     /**
      * Constructeur par recopie.
      * @param s
