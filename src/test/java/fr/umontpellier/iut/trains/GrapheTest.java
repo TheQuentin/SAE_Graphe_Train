@@ -46,4 +46,12 @@ public class GrapheTest {
         assertTrue(graphe.possedeUnCycle());
         assertEquals(6, graphe.degreMax());
     }
+
+    @Test
+    public void test_getNbSommets() {
+        Graphe graphe = new Graphe(3);
+        assertEquals(3, graphe.getNbSommets());
+    }
 }
+
+

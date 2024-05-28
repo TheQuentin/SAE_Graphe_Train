@@ -25,7 +25,9 @@ public class Graphe {
      */
     public Graphe(int n) { //fait mais pas testé
         this.sommets = new HashSet<>();
-        ajouterSommet(n);
+        for (int i = 0; i < n; i++) {
+            sommets.add(new Sommet(i));
+        }
     }
 
     /**
