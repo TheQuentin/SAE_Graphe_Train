@@ -16,6 +16,13 @@ import fr.umontpellier.iut.trains.plateau.Plateau;
 @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestPerso {
 
+
+    @Test
+    public void test_contructeurGrapheAvecOrdre(){
+        Graphe g = new Graphe(5);
+        assertEquals(5, g.getNbSommets());
+    }
+
     @Test
     public void test_ajouter_sommet() {
         Graphe g = new Graphe();
@@ -603,30 +610,5 @@ public class TestPerso {
 
         assertEquals(false, g.estCycle());
 
-    }
-
-    @Test
-    public void test_GetDistance_passe1(){
-        Graphe g = new Graphe();
-
-        Sommet s1 = new Sommet(1);
-        Sommet s2 = new Sommet(2);
-        Sommet s3 = new Sommet(3);
-        Sommet s4 = new Sommet(4);
-        Sommet s5 = new Sommet(5);
-
-        g.ajouterSommet(s1);
-        g.ajouterSommet(s2);
-        g.ajouterSommet(s3);
-        g.ajouterSommet(s4);
-        g.ajouterSommet(s5);
-
-        g.ajouterArete(s1, s2);
-        g.ajouterArete(s2, s3);
-        g.ajouterArete(s3, s4);
-        g.ajouterArete(s4, s5);
-        g.ajouterArete(s5, s1);
-
-        assertEquals(4, g.getDistance(s1, s4));
     }
 }

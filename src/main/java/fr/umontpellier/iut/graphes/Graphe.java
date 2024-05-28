@@ -336,47 +336,68 @@ public class Graphe {
      * pré-requis : l'ensemble de départ et le sommet d'arrivée sont inclus dans l'ensemble des sommets de this
      */
     public int getDistance(Set<Sommet> depart, Sommet arrivee) { // plusieurs départ et un arrivée (dijsktra)
-        int distance = 0;
+        Map<Sommet, Integer> distances = new HashMap<>(); // un sommet avec sa distance associée par rapport au sommet de départ
 
-        for (Sommet s : depart) {
-            distance = Math.min(distance, getDistance(s, arrivee));
+        for (Sommet s : sommets) {
+            distances.put(s, Integer.MAX_VALUE); // on met les distances à l'infini (comme dijkstra)
         }
 
-        return distance;
+        PriorityQueue<Sommet> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get)); //listes de sommets triés par distance
+        for (Sommet s : depart) {
+            distances.put(s, 0); // on met la distance à 0 pour les sommets de départ
+            queue.add(s);
+        }
+
+        while (!queue.isEmpty()) {
+            Sommet actuel = queue.poll(); // queue.poll() c'est pour récupérer le sommet avec la distance la plus petite
+
+            if (actuel.equals(arrivee)) {
+                return distances.get(actuel);
+            }
+
+            for (Sommet voisin : actuel.getVoisins()) {
+                int nouvelleDist = distances.get(actuel) + voisin.getSurcout(); // calcul de la nouvelle distance
+                if (nouvelleDist < distances.get(voisin)) { // si la nouvelle distance est plus petite que l'ancienne
+                    distances.put(voisin, nouvelleDist); // on met à jour la distance
+                    queue.add(voisin);
+                }
+            }
+        }
+
+        return distances.get(arrivee);
     }
 
     /**
      * @return le surcout total minimal du parcours entre le sommet de depart et le sommet d'arrivée
      */
-    public int getDistance(Sommet depart, Sommet arrivee) { // un départ et une arrivée (dijsktra)
-       ArrayList<Sommet> sommetsNonVisites = new ArrayList<>(sommets);
-         Map<Sommet, Integer> distance = new HashMap<>();
-            Map<Sommet, Sommet> predecesseur = new HashMap<>();
-            for (Sommet s : sommets) {
-                distance.put(s, Integer.MAX_VALUE);
-                predecesseur.put(s, null);
-            }
-            distance.put(depart, 0);
+    public int getDistance(Sommet depart, Sommet arrivee) { // un seul départ et une arrivée (dijsktra)
+        Map<Sommet, Integer> distances = new HashMap<>(); // un sommet avec sa distance associée par rapport au sommet de départ
 
-            while (!sommetsNonVisites.isEmpty()) {
-                Sommet s = sommetsNonVisites.get(0);
-                for (Sommet t : sommetsNonVisites) {
-                    if (distance.get(t) < distance.get(s)) {
-                        s = t;
-                    }
-                }
-                sommetsNonVisites.remove(s);
-                for (Sommet t : s.getVoisins()) {
-                    if (sommetsNonVisites.contains(t)) {
-                        int surcout = distance.get(s) + s.getSurcout();
-                        if (surcout < distance.get(t)) {
-                            distance.put(t, surcout);
-                            predecesseur.put(t, s);
-                        }
-                    }
+        for (Sommet s : sommets) {
+            distances.put(s, Integer.MAX_VALUE); // on met les distances à la valeur infini
+        }
+        distances.put(depart, 0);
+
+        PriorityQueue<Sommet> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get)); //listes de sommets triés par distance
+        queue.add(depart); // on ajoute le sommet de départ à la queue
+
+        while (!queue.isEmpty()) {
+            Sommet actuelle = queue.poll(); // on récupère le sommet avec la distance la plus petite
+
+            if (actuelle.equals(arrivee)) {
+                return distances.get(actuelle);
+            }
+
+            for (Sommet voisins : actuelle.getVoisins()) {
+                int newDist = distances.get(actuelle) + voisins.getSurcout(); // calcul de la nouvelle distance
+                if (newDist < distances.get(voisins)) { // si la nouvelle distance est plus petite que l'ancienne
+                    distances.put(voisins, newDist); // on met à jour la distance
+                    queue.add(voisins);
                 }
             }
-            return distance.get(arrivee);
+        }
+
+        return distances.get(arrivee);
     }
 
     /**
