@@ -484,6 +484,31 @@ public class TestPerso {
     }
 
     @Test
+    public void test_possede_un_isthme_passe3(){
+        Graphe g = new Graphe();
+
+        List<Sommet> sommets = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            sommets.add(new Sommet(i));
+            g.ajouterSommet(sommets.get(i));
+        }
+
+        g.ajouterArete(sommets.get(0), sommets.get(1));
+        g.ajouterArete(sommets.get(1), sommets.get(2));
+        g.ajouterArete(sommets.get(2), sommets.get(3));
+        g.ajouterArete(sommets.get(3), sommets.get(0));
+        g.ajouterArete(sommets.get(2), sommets.get(4));
+        g.ajouterArete(sommets.get(4), sommets.get(5));
+        g.ajouterArete(sommets.get(5), sommets.get(6));
+        g.ajouterArete(sommets.get(6), sommets.get(7));
+        g.ajouterArete(sommets.get(7), sommets.get(4));
+
+
+        assertEquals(true, g.possedeUnIsthme());
+
+    }
+
+    @Test
     public void test_possede_un_isthme_fail1(){
         Graphe g = new Graphe();        
 
