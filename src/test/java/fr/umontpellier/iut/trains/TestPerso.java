@@ -497,7 +497,7 @@ public class TestPerso {
         g.ajouterArete(sommets.get(1), sommets.get(2));
         g.ajouterArete(sommets.get(2), sommets.get(3));
         g.ajouterArete(sommets.get(3), sommets.get(0));
-        g.ajouterArete(sommets.get(2), sommets.get(4));
+        g.ajouterArete(sommets.get(2), sommets.get(4)); // c'est un isthme
         g.ajouterArete(sommets.get(4), sommets.get(5));
         g.ajouterArete(sommets.get(5), sommets.get(6));
         g.ajouterArete(sommets.get(6), sommets.get(7));
