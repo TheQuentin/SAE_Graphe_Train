@@ -487,7 +487,6 @@ public class TestPerso {
     public void test_possede_un_isthme_passe3(){
         Graphe g = new Graphe();
 
-
         List<Sommet> sommets = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             sommets.add(new Sommet(i));
