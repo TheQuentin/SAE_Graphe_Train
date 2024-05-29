@@ -292,10 +292,18 @@ public class Graphe {
         if (estChaine()) {
             return true;
         }
-        for (Sommet s : sommets) {
-            if (degre(s) == 1) {
-                return true;
-            }
+
+        Set<Set<Sommet>> aretes = getAretes(); // on récupère les arêtes du graphe
+        int nbClasseConnexite = getEnsembleClassesConnexite().size();
+
+        for(Set<Sommet> e : aretes){ // on parcourt toutes les arêtes
+            ArrayList<Sommet> sommet = new ArrayList<>(e);
+
+            supprimerArete(sommet.get(0),sommet.get(1));
+            int classeConnexiteNew = getEnsembleClassesConnexite().size();
+            if(classeConnexiteNew > nbClasseConnexite) return true; // si le nombre de classe de connexité augmente, c'est un isthme
+
+            ajouterArete(sommet.get(0),sommet.get(1));
         }
         return false;
     }
