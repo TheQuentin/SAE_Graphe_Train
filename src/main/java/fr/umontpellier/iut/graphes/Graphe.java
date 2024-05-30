@@ -301,7 +301,7 @@ public class Graphe {
 
             supprimerArete(sommet.get(0),sommet.get(1));
             int classeConnexiteNew = getEnsembleClassesConnexite().size();
-            if(classeConnexiteNew > nbClasseConnexite) return true; // si le nombre de classe de connexité augmente, c'est un isthme
+            if(classeConnexiteNew > nbClasseConnexite) return true; // si le nombre de classe de connexité augmente, c'est un isthme.
 
             ajouterArete(sommet.get(0),sommet.get(1));
         }
