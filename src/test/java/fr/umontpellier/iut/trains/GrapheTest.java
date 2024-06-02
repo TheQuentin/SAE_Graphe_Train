@@ -47,3 +47,4 @@ public class GrapheTest {
         assertEquals(6, graphe.degreMax());
     }
 }
+

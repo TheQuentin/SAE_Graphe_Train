@@ -16,6 +16,13 @@ import fr.umontpellier.iut.trains.plateau.Plateau;
 @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestPerso {
 
+
+    @Test
+    public void test_contructeurGrapheAvecOrdre(){
+        Graphe g = new Graphe(5);
+        assertEquals(5, g.getNbSommets());
+    }
+
     @Test
     public void test_ajouter_sommet() {
         Graphe g = new Graphe();
@@ -474,6 +481,31 @@ public class TestPerso {
         
 
         assertEquals(true, g.possedeUnIsthme());
+    }
+
+    @Test
+    public void test_possede_un_isthme_passe3(){
+        Graphe g = new Graphe();
+
+        List<Sommet> sommets = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            sommets.add(new Sommet(i));
+            g.ajouterSommet(sommets.get(i));
+        }
+
+        g.ajouterArete(sommets.get(0), sommets.get(1));
+        g.ajouterArete(sommets.get(1), sommets.get(2));
+        g.ajouterArete(sommets.get(2), sommets.get(3));
+        g.ajouterArete(sommets.get(3), sommets.get(0));
+        g.ajouterArete(sommets.get(2), sommets.get(4)); // c'est un isthme
+        g.ajouterArete(sommets.get(4), sommets.get(5));
+        g.ajouterArete(sommets.get(5), sommets.get(6));
+        g.ajouterArete(sommets.get(6), sommets.get(7));
+        g.ajouterArete(sommets.get(7), sommets.get(4));
+
+
+        assertEquals(true, g.possedeUnIsthme());
+
     }
 
     @Test
