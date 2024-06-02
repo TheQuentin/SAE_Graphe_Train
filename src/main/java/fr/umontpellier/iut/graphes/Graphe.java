@@ -120,9 +120,35 @@ public class Graphe {
         sommetBuilder.setJoueurs(ensembleJoueurs);
         Sommet sommetFusionne = sommetBuilder.createSommet();
 
-        return grapheFusionne; // A FINIR !!!
-
+        for (Sommet sommet : g.getSommets()){
+            if (!ensemble.contains(sommet)){
+                grapheFusionne.ajouterSommet(sommet);
+            }
         }
+        grapheFusionne.ajouterSommet(sommetFusionne);
+
+        for (Sommet sommet : g.getSommets()){
+            if (!ensemble.contains(sommet)){
+                for (Sommet voisin : sommet.getVoisins()){
+                    if (!ensemble.contains(voisin)){
+                        grapheFusionne.ajouterArete(sommet, voisin);
+                    }
+                }
+            }
+        }
+
+        for (Sommet sommet : ensemble){
+            for (Sommet voisin : sommet.getVoisins()){
+                if (!ensemble.contains(voisin)){
+                    grapheFusionne.ajouterArete(sommetFusionne, voisin);
+                }
+            }
+        }
+
+        return grapheFusionne;
+    }
+
+
 
     /**
      * @param i un entier
@@ -323,8 +349,41 @@ public class Graphe {
      * (si deux sommets ont le même degré, alors on les ordonne par indice croissant).
      */
     public Map<Integer, Set<Sommet>> getColorationGloutonne() {
-        throw new RuntimeException("Méthode à implémenter");
-    }
+        List<Sommet> sommetsTries = new ArrayList<>();
+        List<Sommet> sommetsNonVus = new ArrayList<>(sommets);
+        int i = 0;
+        while (!sommetsNonVus.isEmpty()) {
+            int maxDeg = 0;
+            Sommet sommetMaxDeg = null;
+            for (Sommet s : sommetsNonVus) {
+                if (degre(s) > maxDeg) {
+                    maxDeg = degre(s);
+                    sommetMaxDeg = s;
+                }
+                if (degre(s) == maxDeg) {
+                if (s.getIndice() >= sommetsNonVus.get(maxDeg).getIndice()) {
+                    maxDeg = degre(s);
+                    sommetMaxDeg = s;
+                    }
+                }
+            }
+            sommetsTries.add(i, sommetMaxDeg); i++;
+            sommetsNonVus.remove(sommetMaxDeg);
+        }
+
+        
+        Map<Integer, Set<Sommet>> colorationGloutonne = new HashMap<>();
+        Set<Sommet> couleur = new HashSet<>();
+        int couleurActuelle = 0;
+        
+        Sommet s0 = sommetsTries.remove(0);
+        couleur.add(s0); colorationGloutonne.put(couleurActuelle, couleur);
+
+        //A FINIR !!!!!!!!!!!!!!!!!!!!!!!!!
+            
+        return colorationGloutonne;
+            
+        }
 
     /**
      * @param depart  - ensemble non-vide de sommets
