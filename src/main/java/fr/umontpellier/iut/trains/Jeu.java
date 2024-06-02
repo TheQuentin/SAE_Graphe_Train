@@ -434,6 +434,26 @@ public class Jeu implements Runnable {
      *         rails
      */
     public Graphe getGraphe(Joueur joueur) {
-        throw new RuntimeException("Méthode à implémenter");
+        //sommets
+        Map<Tuile, Sommet> map = new HashMap<>();
+        for (Tuile tuile : tuiles) {
+            if(tuile.estSommet() && tuile.hasRail(joueur)) {
+                map.put(tuile, new Sommet(tuile, this));
+            }
+        }
+
+        //aretes
+        for (Tuile tuile : tuiles) {
+            if(tuile.estSommet() && tuile.hasRail(joueur)) {
+                Sommet sommet = map.get(tuile);
+                for (Tuile tuileVoisine : tuile.getVoisines()) {
+                    if(tuileVoisine.estSommet() && tuileVoisine.hasRail(joueur)) {
+                        sommet.ajouterVoisin(map.get(tuileVoisine));
+                    }
+                }
+            }
+        }
+        Set<Sommet> sommets = new HashSet<>(map.values());
+        return new Graphe(sommets);
     }
 }

@@ -634,6 +634,5 @@ public class TestPerso {
 
 
         assertEquals(false, g.estCycle());
-
     }
 }
