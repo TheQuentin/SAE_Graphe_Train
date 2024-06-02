@@ -539,7 +539,30 @@ public class Graphe {
      * @return true si et seulement si this possède un sous-graphe complet d'ordre {@code k}
      */
     public boolean possedeSousGrapheComplet(int k) {
-        throw new RuntimeException("Méthode à implémenter");
+
+        for (int i =0; i<sommets.size(); i++) {
+            Graphe sousGraphe = new Graphe();
+
+            for (int j = i; j < k + i && k + i <= sommets.size(); j++) {
+                sousGraphe.ajouterSommet(new Sommet(j));
+
+                //si le grand graphe contient une arête entre les sommets i et j, on ajoute l'arête dans le sous graphe, il faut regarder les voisins*
+                for (Sommet s : sommets) {
+                    if (s.getIndice() == j) {
+                        for (Sommet t : s.getVoisins()) {
+                            if (t.getIndice() == i) {
+                                sousGraphe.ajouterArete(s, t);
+                            }
+                        }
+                    }
+                }
+
+                if (sousGraphe.estComplet()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
