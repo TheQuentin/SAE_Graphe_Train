@@ -636,4 +636,179 @@ public class TestPerso {
         assertEquals(false, g.estCycle());
 
     }
+
+    @Test
+    public void possedeSousGrapheCompletPasse(){
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);  
+        Sommet s6 = new Sommet(6);
+
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s1, s4);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s2, s4);
+        g.ajouterArete(s3, s4);
+        g.ajouterArete(s6, s5);
+
+
+        assertEquals(true, g.possedeSousGrapheComplet(4));
+    }
+
+    @Test
+    public void possedeSousGrapheCompletPasse2(){
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s1);
+        
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s2, s3);
+  
+        assertEquals(true, g.possedeSousGrapheComplet(3));
+    }
+
+    @Test
+    public void possedeSousGrapheCompletFail(){
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s1);
+        
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s2, s3);
+  
+        assertEquals(false, g.possedeSousGrapheComplet(4));
+    }
+
+    @Test
+    public void possedeSousGrapheCompletPasse3() {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+        Sommet s6 = new Sommet(6);
+        Sommet s7 = new Sommet(7);
+        Sommet s8 = new Sommet(8);
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
+        g.ajouterSommet(s7);
+        g.ajouterSommet(s8);
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s2, s4);
+        g.ajouterArete(s2, s5);
+        g.ajouterArete(s2, s6);
+        g.ajouterArete(s3, s4);
+        g.ajouterArete(s3, s5);
+        g.ajouterArete(s3, s6);
+        g.ajouterArete(s4, s5);
+        g.ajouterArete(s4, s6);
+        g.ajouterArete(s5, s6);
+        g.ajouterArete(s7, s1);
+        g.ajouterArete(s7, s2);
+        g.ajouterArete(s7, s4);
+        g.ajouterArete(s7, s6);
+        g.ajouterArete(s8, s1);
+        g.ajouterArete(s8, s3);
+        g.ajouterArete(s8, s5);
+
+        assertEquals(false, g.possedeSousGrapheComplet(8));
+        assertEquals(false, g.possedeSousGrapheComplet(7));
+        assertEquals(false, g.possedeSousGrapheComplet(6));
+        assertEquals(true, g.possedeSousGrapheComplet(5));
+        assertEquals(true, g.possedeSousGrapheComplet(4));
+        assertEquals(true, g.possedeSousGrapheComplet(3));
+        assertEquals(true, g.possedeSousGrapheComplet(2));
+        assertEquals(true, g.possedeSousGrapheComplet(1));
+    }
+
+    @Test
+    public void possedeSousGrapheCompletPasse4() {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s1, s4);
+        g.ajouterArete(s2, s3);
+
+        assertEquals(true, g.possedeSousGrapheComplet(3));
+    }
+
+    @Test
+    public void possedeSousGrapheCompletPasse5() {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+        
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s1, s4);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s2, s5);
+        g.ajouterArete(s3, s5);
+        g.ajouterArete(s4, s5);
+
+        assertEquals(true, g.possedeSousGrapheComplet(3));
+        assertEquals(false, g.possedeSousGrapheComplet(4));
+        assertEquals(true, g.possedeSousGrapheComplet(2));
+    }
 }
+

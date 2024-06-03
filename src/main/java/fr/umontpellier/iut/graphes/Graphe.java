@@ -101,7 +101,7 @@ public class Graphe {
      * sera la somme des nombres de points de victoire des sommets fusionnés.
      * L'ensemble de joueurs du nouveau sommet sera l'union des ensembles de joueurs des sommets fusionnés.
      */
-    public static Graphe fusionnerEnsembleSommets(Graphe g, Set<Sommet> ensemble) {
+    public static Graphe fusionnerEnsembleSommets(Graphe g, Set<Sommet> ensemble) { //fait mais pas testé
         Graphe grapheFusionne = new Graphe();
         int surcout = 0; int nbPointsVictoire = 0;
         int indiceMin = Integer.MAX_VALUE;
@@ -539,7 +539,39 @@ public class Graphe {
      * @return true si et seulement si this possède un sous-graphe complet d'ordre {@code k}
      */
     public boolean possedeSousGrapheComplet(int k) {
-        throw new RuntimeException("Méthode à implémenter");
+        int n = getNbSommets();
+        if (k > n) return false;
+        if (k == n) return estComplet();
+        
+        ArrayList<Sommet> sommets = new ArrayList<>(this.sommets);
+        for (Sommet s : sommets) {
+            if (s.getVoisins().size() >= k - 1) {
+                Set<Sommet> sousGraphe = new HashSet<>();
+                sousGraphe.add(s);
+                ArrayList<Sommet> voisins = new ArrayList<>(s.getVoisins());
+                for (int i = 0; i < voisins.size(); i++) {
+                    if (sousGraphe.size() >= k) break;
+                    sousGraphe.add(voisins.get(i));
+                }
+                if (estSousGrapheComplet(sousGraphe)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean estSousGrapheComplet(Set<Sommet> sousGraphe) {
+        List<Sommet> sommets = new ArrayList<>(sousGraphe);
+        int n = sommets.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (!sommets.get(i).estVoisin(sommets.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
