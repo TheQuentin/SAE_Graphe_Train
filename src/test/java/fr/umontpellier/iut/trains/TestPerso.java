@@ -924,5 +924,149 @@ public class TestPerso {
             }
         }
     }
+
+    @Test
+    public void possedeSousGrapheIsomorphePasse1 () {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+        Sommet s6 = new Sommet(6);
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s3,s4);
+        g.ajouterArete(s4,s5);
+        g.ajouterArete(s5,s6);
+        g.ajouterArete(s2,s5);
+        g.ajouterArete(s3,s5);
+        g.ajouterArete(s2,s4);
+
+
+        Graphe h = new Graphe();
+
+        Sommet h1 = new Sommet(1);
+        Sommet h2 = new Sommet(2);
+        Sommet h3 = new Sommet(3);
+        Sommet h4 = new Sommet(4);
+
+        g.ajouterSommet(h1);
+        g.ajouterSommet(h2);
+        g.ajouterSommet(h3);
+        g.ajouterSommet(h4);
+
+        h.ajouterArete(h1, h2);
+        h.ajouterArete(h2,h3);
+        h.ajouterArete(h3,h4);
+        h.ajouterArete(h1,h4);
+        h.ajouterArete(h1,h3);
+        h.ajouterArete(h2,h4);
+
+        assertEquals(true, g.possedeSousGrapheIsomorphe(h));
+    }
+
+    @Test
+    public void possedeSousGrapheIsomorpheFail1 () {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+        Sommet s6 = new Sommet(6);
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s3,s4);
+        g.ajouterArete(s4,s5);
+        g.ajouterArete(s5,s6);
+        g.ajouterArete(s2,s5);
+        g.ajouterArete(s3,s5);
+        g.ajouterArete(s2,s4);
+
+
+        Graphe h = new Graphe();
+
+        Sommet h1 = new Sommet(1);
+        Sommet h2 = new Sommet(2);
+        Sommet h3 = new Sommet(3);
+        Sommet h4 = new Sommet(4);
+
+        g.ajouterSommet(h1);
+        g.ajouterSommet(h2);
+        g.ajouterSommet(h3);
+        g.ajouterSommet(h4);
+
+        h.ajouterArete(h1, h2);
+        h.ajouterArete(h2,h3);
+        h.ajouterArete(h3,h4);
+
+        assertEquals(false, g.possedeSousGrapheIsomorphe(h));
+    }
+
+    @Test
+    public void possedeSousGrapheIsomorpheFail2 () {
+        Graphe g = new Graphe();
+
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+        Sommet s6 = new Sommet(6);
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+        g.ajouterSommet(s6);
+
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s3,s4);
+        g.ajouterArete(s4,s5);
+        g.ajouterArete(s5,s6);
+        g.ajouterArete(s2,s5);
+        g.ajouterArete(s3,s5);
+        g.ajouterArete(s2,s4);
+
+
+        Graphe h = new Graphe();
+
+        Sommet h1 = new Sommet(1);
+        Sommet h2 = new Sommet(2);
+        Sommet h3 = new Sommet(3);
+        Sommet h4 = new Sommet(4);
+        Sommet h5 = new Sommet(5);
+
+        g.ajouterSommet(h1);
+        g.ajouterSommet(h2);
+        g.ajouterSommet(h3);
+        g.ajouterSommet(h4);
+        g.ajouterSommet(h5);
+
+        h.ajouterArete(h1, h2);
+
+        assertEquals(false, g.possedeSousGrapheIsomorphe(h));
+    }
 }
 

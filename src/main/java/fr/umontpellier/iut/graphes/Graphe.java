@@ -599,8 +599,54 @@ public class Graphe {
      * @return true si et seulement si this possède un sous-graphe isomorphe à {@code g}
      */
     public boolean possedeSousGrapheIsomorphe(Graphe g) {
-        throw new RuntimeException("Méthode à implémenter");
+        if (g.sommets.size() > this.sommets.size()) {
+            return false;
+        }
+
+        List<Sommet> sommetsG = new ArrayList<>(this.sommets);
+        List<Sommet> sommetsH = new ArrayList<>(g.sommets);
+
+        return backtrack(sommetsG, sommetsH, new HashMap<>(), new HashSet<>());
     }
+
+    private boolean backtrack(List<Sommet> sommetsG, List<Sommet> sommetsH, Map<Sommet, Sommet> mapping, Set<Sommet> used) {
+        if (mapping.size() == sommetsH.size()) {
+            return verifyIsomorphism(mapping);
+        }
+
+        Sommet nextH = sommetsH.get(mapping.size());
+
+        for (Sommet g : sommetsG) {
+            if (!used.contains(g)) {
+                mapping.put(nextH, g);
+                used.add(g);
+
+                if (backtrack(sommetsG, sommetsH, mapping, used)) {
+                    return true;
+                }
+
+                mapping.remove(nextH);
+                used.remove(g);
+            }
+        }
+
+        return false;
+    }
+
+    private boolean verifyIsomorphism(Map<Sommet, Sommet> mapping) {
+        for (Sommet h1 : mapping.keySet()) {
+            Sommet g1 = mapping.get(h1);
+
+            for (Sommet h2 : h1.getVoisins()) {
+                Sommet g2 = mapping.get(h2);
+                if (g2 == null || !g1.getVoisins().contains(g2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     /**
      * @param s
