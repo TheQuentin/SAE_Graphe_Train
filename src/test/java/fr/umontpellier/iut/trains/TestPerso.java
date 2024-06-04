@@ -1,7 +1,6 @@
 package fr.umontpellier.iut.trains;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Timeout;
 
 import fr.umontpellier.iut.graphes.Graphe;
 import fr.umontpellier.iut.graphes.Sommet;
-import fr.umontpellier.iut.trains.plateau.Plateau;
 
 @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestPerso {
