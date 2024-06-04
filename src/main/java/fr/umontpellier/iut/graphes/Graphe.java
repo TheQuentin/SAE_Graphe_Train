@@ -552,28 +552,29 @@ public class Graphe {
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
     public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
-        Map<Integer, Set<Sommet>> colorationPropreOptimale = new HashMap<>();
-        Set<Sommet> sommetsNonColories = new HashSet<>(sommets);
-        int couleur = 0;
+            Map<Integer, Set<Sommet>> coulEtSommets = new HashMap<>();
 
-        while (!sommetsNonColories.isEmpty()) { // tant qu'il reste des sommets non coloriés
-            Set<Sommet> classe = new HashSet<>();
-            Sommet sommet = sommetsNonColories.iterator().next();
-            sommetsNonColories.remove(sommet);
-            classe.add(sommet);
-
-            for (Sommet voisin : sommet.getVoisins()) {
-                if (sommetsNonColories.contains(voisin)) {
-                    classe.add(voisin);
-                    sommetsNonColories.remove(voisin);
-                }
+            for(int i = 0; i<4; i++){
+                coulEtSommets.put(i, new HashSet<>());
             }
 
-            colorationPropreOptimale.put(couleur, classe);
-            couleur++;
-        }
+            List<Sommet> pasColories = new ArrayList<>(sommets);
 
-        return colorationPropreOptimale;
+            for(Sommet sommet : pasColories){
+                boolean[] possible = new boolean[4];
+
+                for(Sommet voisin : sommet.getVoisins()){
+                    for(int i=0; i<4; i++){
+                        if(coulEtSommets.get(i).contains(voisin)) possible[i] = false; // si un voisin est de la couleur i, on ne peut donc pas colorier s en i
+                    }
+                }
+                for(int i=0; i<4; i++){
+                    if(possible[i]){ // si on peut colorier le sommet en i
+                        coulEtSommets.get(i).add(sommet); // on ajoute le sommet à la couleur i
+                    }
+                }
+            }
+            return coulEtSommets;
     }
 
     /**
