@@ -611,7 +611,7 @@ public class Graphe {
 
     private boolean backtrack(List<Sommet> sommetsG, List<Sommet> sommetsH, Map<Sommet, Sommet> mapping, Set<Sommet> used) {
         if (mapping.size() == sommetsH.size()) {
-            return verifyIsomorphism(mapping);
+            return verifierIsomorphe(mapping);
         }
 
         Sommet nextH = sommetsH.get(mapping.size());
@@ -633,7 +633,7 @@ public class Graphe {
         return false;
     }
 
-    private boolean verifyIsomorphism(Map<Sommet, Sommet> mapping) {
+    private boolean verifierIsomorphe(Map<Sommet, Sommet> mapping) {
         for (Sommet h1 : mapping.keySet()) {
             Sommet g1 = mapping.get(h1);
 
