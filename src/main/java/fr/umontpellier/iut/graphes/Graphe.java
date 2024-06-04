@@ -105,7 +105,7 @@ public class Graphe {
         Graphe grapheFusionne = new Graphe();
         int surcout = 0; int nbPointsVictoire = 0;
         int indiceMin = Integer.MAX_VALUE;
-        Set<Integer> ensembleJoueurs = new HashSet<>(); //on empeche les doublons
+        Set<Integer> ensembleJoueurs = new HashSet<>(); 
 
         for (Sommet sommet : ensemble){
             if (sommet.getIndice() < indiceMin){
@@ -122,13 +122,14 @@ public class Graphe {
         sommetBuilder.setNbPointsVictoire(nbPointsVictoire);
         sommetBuilder.setJoueurs(ensembleJoueurs);
         Sommet sommetFusionne = sommetBuilder.createSommet();
+        grapheFusionne.ajouterSommet(sommetFusionne);
 
         for (Sommet sommet : g.getSommets()){
             if (!ensemble.contains(sommet)){
                 grapheFusionne.ajouterSommet(sommet);
+
             }
         }
-        grapheFusionne.ajouterSommet(sommetFusionne);
 
         for (Sommet sommet : g.getSommets()){
             if (!ensemble.contains(sommet)){
@@ -247,12 +248,13 @@ public class Graphe {
      * @return true si et seulement si this est une chaîne. On considère que le graphe vide est une chaîne.
      */
     public boolean estChaine() { //fait mais pas testé
-        if (sommets.isEmpty()) {
-            return true;
-        }
-        if (possedeUnCycle()) {
-            return false;
-        }
+        if (sommets.isEmpty()) return true;
+        
+        if (estCycle()) return true;
+        
+
+        if (possedeUnCycle()) return false;
+        
          // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.)
         int nbSommetsImpairs = 0;
         for (Sommet s : sommets) {
@@ -360,41 +362,59 @@ public class Graphe {
      * (si deux sommets ont le même degré, alors on les ordonne par indice croissant).
      */
     public Map<Integer, Set<Sommet>> getColorationGloutonne() {
+        Map<Sommet, Integer> coloration = new HashMap<>();
+        Map<Integer, Set<Sommet>> gloutonne = new HashMap<>();
+    
         List<Sommet> sommetsTries = new ArrayList<>();
         List<Sommet> sommetsNonVus = new ArrayList<>(sommets);
         int i = 0;
         while (!sommetsNonVus.isEmpty()) {
-            int maxDeg = 0;
+            int maxDeg = -1;
             Sommet sommetMaxDeg = null;
             for (Sommet s : sommetsNonVus) {
-                if (degre(s) > maxDeg) {
-                    maxDeg = degre(s);
+                int deg = degre(s);
+                if (deg > maxDeg) {
+                    maxDeg = deg;
                     sommetMaxDeg = s;
-                }
-                if (degre(s) == maxDeg) {
-                if (s.getIndice() >= sommetsNonVus.get(maxDeg).getIndice()) {
-                    maxDeg = degre(s);
-                    sommetMaxDeg = s;
+                } else if (deg == maxDeg) {
+                    if (sommetMaxDeg == null || s.getIndice() < sommetMaxDeg.getIndice()) {
+                        sommetMaxDeg = s;
+                        maxDeg = degre(s);
                     }
                 }
             }
-            sommetsTries.add(i, sommetMaxDeg); i++;
-            sommetsNonVus.remove(sommetMaxDeg);
+            if (sommetMaxDeg != null) {
+                sommetsTries.add(i, sommetMaxDeg);
+                i++;
+                sommetsNonVus.remove(sommetMaxDeg);
+            }
         }
 
-        
-        Map<Integer, Set<Sommet>> colorationGloutonne = new HashMap<>();
-        Set<Sommet> couleur = new HashSet<>();
-        int couleurActuelle = 0;
-        
-        Sommet s0 = sommetsTries.remove(0);
-        couleur.add(s0); colorationGloutonne.put(couleurActuelle, couleur);
-
-        //A FINIR !!!!!!!!!!!!!!!!!!!!!!!!!
-            
-        return colorationGloutonne;
-            
+    
+        for (Sommet sommet : sommetsTries) {
+            Set<Integer> couleursVoisines = new HashSet<>();
+            for (Sommet voisin : sommet.getVoisins()) {
+                if (coloration.containsKey(voisin)) {
+                    couleursVoisines.add(coloration.get(voisin));
+                }
+            }
+    
+            int couleur = 0;
+            while (couleursVoisines.contains(couleur)) {
+                couleur++;
+            }
+    
+            coloration.put(sommet, couleur);
+    
+            if (!gloutonne.containsKey(couleur)) {
+                gloutonne.put(couleur, new HashSet<>());
+            }
+            gloutonne.get(couleur).add(sommet);
         }
+    
+        return gloutonne;
+    }
+    
 
     /**
      * @param depart  - ensemble non-vide de sommets

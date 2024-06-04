@@ -1,9 +1,15 @@
 package fr.umontpellier.iut.trains;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Timeout;
@@ -860,6 +866,63 @@ public class TestPerso {
         assertEquals(true, g.possedeSousGrapheComplet(3));
         assertEquals(false, g.possedeSousGrapheComplet(4));
         assertEquals(true, g.possedeSousGrapheComplet(2));
+    }
+
+    @Test
+    public void test_getColorationGloutonne() {
+        // Création d'un graphe
+        Graphe g = new Graphe();
+
+        // Ajout des sommets
+        Sommet s1 = new Sommet(1);
+        Sommet s2 = new Sommet(2);
+        Sommet s3 = new Sommet(3);
+        Sommet s4 = new Sommet(4);
+        Sommet s5 = new Sommet(5);
+
+        g.ajouterSommet(s1);
+        g.ajouterSommet(s2);
+        g.ajouterSommet(s3);
+        g.ajouterSommet(s4);
+        g.ajouterSommet(s5);
+
+        // Ajout des arêtes
+        g.ajouterArete(s1, s2);
+        g.ajouterArete(s1, s3);
+        g.ajouterArete(s2, s3);
+        g.ajouterArete(s2, s4);
+        g.ajouterArete(s3, s4);
+        g.ajouterArete(s4, s5);
+
+        // Appel de la méthode à tester
+        Map<Integer, Set<Sommet>> coloration = g.getColorationGloutonne();
+
+        // Vérification du résultat
+        // Par exemple, on peut vérifier que chaque sommet est bien coloré
+        assertNotNull(coloration);
+        
+        // Vérifier que le nombre de couleurs utilisées ne dépasse pas le nombre de sommets (cas extrême)
+        assertTrue(coloration.size() <= g.getNbSommets());
+
+        // Vérification des sommets colorés
+        Set<Sommet> tousLesSommetsColorés = new HashSet<>();
+        for (Set<Sommet> sommetsDeMemeCouleur : coloration.values()) {
+            tousLesSommetsColorés.addAll(sommetsDeMemeCouleur);
+        }
+        assertEquals(g.getNbSommets(), tousLesSommetsColorés.size());
+
+        // Vérifier que deux voisins n'ont pas la même couleur
+        for (Map.Entry<Integer, Set<Sommet>> entry : coloration.entrySet()) {
+            int couleur = entry.getKey();
+            Set<Sommet> sommets = entry.getValue();
+            for (Sommet sommet : sommets) {
+                for (Sommet voisin : sommet.getVoisins()) {
+                    // Si le voisin est dans le même ensemble de couleur, il y a un problème
+                    assertEquals(false, coloration.get(couleur).contains(voisin), 
+                        "Le sommet " + sommet.getIndice() + " et son voisin " + voisin.getIndice() + " ont la même couleur " + couleur);
+                }
+            }
+        }
     }
 }
 
