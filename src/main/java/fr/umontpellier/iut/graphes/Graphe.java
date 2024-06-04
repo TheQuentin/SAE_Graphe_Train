@@ -552,7 +552,28 @@ public class Graphe {
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
     public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
-        throw new RuntimeException("Méthode à implémenter");
+        Map<Integer, Set<Sommet>> colorationPropreOptimale = new HashMap<>();
+        Set<Sommet> sommetsNonColories = new HashSet<>(sommets);
+        int couleur = 0;
+
+        while (!sommetsNonColories.isEmpty()) { // tant qu'il reste des sommets non coloriés
+            Set<Sommet> classe = new HashSet<>();
+            Sommet sommet = sommetsNonColories.iterator().next();
+            sommetsNonColories.remove(sommet);
+            classe.add(sommet);
+
+            for (Sommet voisin : sommet.getVoisins()) {
+                if (sommetsNonColories.contains(voisin)) {
+                    classe.add(voisin);
+                    sommetsNonColories.remove(voisin);
+                }
+            }
+
+            colorationPropreOptimale.put(couleur, classe);
+            couleur++;
+        }
+
+        return colorationPropreOptimale;
     }
 
     /**
@@ -598,7 +619,7 @@ public class Graphe {
      * @param g un graphe
      * @return true si et seulement si this possède un sous-graphe isomorphe à {@code g}
      */
-    public boolean possedeSousGrapheIsomorphe(Graphe g) {
+    public boolean possedeSousGrapheIsomorphe(Graphe g) { // ne fonctionne pas encore
         if (g.sommets.size() > this.sommets.size()) {
             return false;
         }

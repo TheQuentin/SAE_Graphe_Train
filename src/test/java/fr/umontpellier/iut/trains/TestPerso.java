@@ -1068,5 +1068,29 @@ public class TestPerso {
 
         assertEquals(false, g.possedeSousGrapheIsomorphe(h));
     }
+
+    @Test
+    public void colorationPropreOptimalPasse1 (){
+        Graphe g = new Graphe();
+
+        List<Sommet> sommets = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            sommets.add(new Sommet(i));
+            g.ajouterSommet(sommets.get(i));
+        }
+
+        g.ajouterArete(sommets.get(1), sommets.get(2));
+        g.ajouterArete(sommets.get(2), sommets.get(3));
+        g.ajouterArete(sommets.get(3), sommets.get(4));
+        g.ajouterArete(sommets.get(4), sommets.get(5));
+        g.ajouterArete(sommets.get(5), sommets.get(6));
+        g.ajouterArete(sommets.get(6), sommets.get(1));
+        g.ajouterArete(sommets.get(2), sommets.get(4));
+        g.ajouterArete(sommets.get(1), sommets.get(5));
+        g.ajouterArete(sommets.get(1), sommets.get(4));
+
+        Map<Integer, Set<Sommet>> coloration = g.getColorationGloutonne();
+        assertEquals(4, coloration.size());
+    }
 }
 
