@@ -565,7 +565,29 @@ public class Graphe {
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
     public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
-        throw new RuntimeException("Méthode à implémenter");
+            Map<Integer, Set<Sommet>> coulEtSommets = new HashMap<>();
+
+            for(int i = 0; i<4; i++){
+                coulEtSommets.put(i, new HashSet<>());
+            }
+
+            List<Sommet> pasColories = new ArrayList<>(sommets);
+
+            for(Sommet sommet : pasColories){
+                boolean[] possible = new boolean[4];
+
+                for(Sommet voisin : sommet.getVoisins()){
+                    for(int i=0; i<4; i++){
+                        if(coulEtSommets.get(i).contains(voisin)) possible[i] = false; // si un voisin est de la couleur i, on ne peut donc pas colorier s en i
+                    }
+                }
+                for(int i=0; i<4; i++){
+                    if(possible[i]){ // si on peut colorier le sommet en i
+                        coulEtSommets.get(i).add(sommet); // on ajoute le sommet à la couleur i
+                    }
+                }
+            }
+            return coulEtSommets;
     }
 
     /**
@@ -612,7 +634,7 @@ public class Graphe {
      * @return true si et seulement si this possède un sous-graphe isomorphe à {@code g}
      */
     public boolean possedeSousGrapheIsomorphe(Graphe g) {
-        if (g.sommets.size() > this.sommets.size()) {  
+        if (g.sommets.size() > this.sommets.size()) {
             return false;
         }
 
