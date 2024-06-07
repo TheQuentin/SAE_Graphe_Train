@@ -101,50 +101,61 @@ public class Graphe {
      * sera la somme des nombres de points de victoire des sommets fusionnés.
      * L'ensemble de joueurs du nouveau sommet sera l'union des ensembles de joueurs des sommets fusionnés.
      */
-    public static Graphe fusionnerEnsembleSommets(Graphe g, Set<Sommet> ensemble) { //fait mais pas testé
+    public static Graphe fusionnerEnsembleSommets(Graphe g, Set<Sommet> ensemble) {
         Graphe grapheFusionne = new Graphe();
-        int surcout = 0; int nbPointsVictoire = 0;
-        int indiceMin = Integer.MAX_VALUE;
-        Set<Integer> ensembleJoueurs = new HashSet<>(); 
+        int indice = Integer.MAX_VALUE;
+        int surcout = 0;
+        int nbPointsVictoire = 0;
+        Set<Integer> joueurs = new HashSet<>();
 
-        for (Sommet sommet : ensemble){
-            if (sommet.getIndice() < indiceMin){
-                indiceMin = sommet.getIndice();
+        //creation du sommet
+        for(Sommet sommetE : ensemble){
+            if(indice>sommetE.getIndice()){
+                indice = sommetE.getIndice();
             }
-            surcout += sommet.getSurcout();
-            nbPointsVictoire += sommet.getNbPointsVictoire();
-            ensembleJoueurs.addAll(sommet.getJoueurs());
+            surcout += sommetE.getSurcout();
+            nbPointsVictoire += sommetE.getNbPointsVictoire();
+            joueurs.addAll(sommetE.getJoueurs());
         }
 
-        SommetBuilder sommetBuilder = new SommetBuilder();
-        sommetBuilder.setIndice(indiceMin);
-        sommetBuilder.setSurcout(surcout);
-        sommetBuilder.setNbPointsVictoire(nbPointsVictoire);
-        sommetBuilder.setJoueurs(ensembleJoueurs);
-        Sommet sommetFusionne = sommetBuilder.createSommet();
+        Sommet.SommetBuilder sommetFusion = new Sommet.SommetBuilder();
+        sommetFusion.setIndice(indice);
+        sommetFusion.setSurcout(surcout);
+        sommetFusion.setNbPointsVictoire(nbPointsVictoire);
+        sommetFusion.setJoueurs(joueurs);
+        Sommet sommetFusionne = sommetFusion.createSommet();
+
+
+        //insertion des sommets
         grapheFusionne.ajouterSommet(sommetFusionne);
-
-        for (Sommet sommet : g.getSommets()){
-            if (!ensemble.contains(sommet)){
-                grapheFusionne.ajouterSommet(sommet);
-
+        for(Sommet sommetG : g.getSommets()){
+            if(!ensemble.contains(sommetG)){
+                Sommet.SommetBuilder sommetBuilder = new Sommet.SommetBuilder();
+                sommetBuilder.setIndice(sommetG.getIndice());
+                sommetBuilder.setSurcout(sommetG.getSurcout());
+                sommetBuilder.setJoueurs(sommetG.getJoueurs());
+                sommetBuilder.setNbPointsVictoire(sommetG.getNbPointsVictoire());
+                Sommet copie = sommetBuilder.createSommet();
+                grapheFusionne.ajouterSommet(copie);
             }
         }
 
-        for (Sommet sommet : g.getSommets()){
-            if (!ensemble.contains(sommet)){
-                for (Sommet voisin : sommet.getVoisins()){
-                    if (!ensemble.contains(voisin)){
-                        grapheFusionne.ajouterArete(sommet, voisin);
+        //ajout des aretes
+        for(Sommet sommet: g.getSommets()){
+            if(!ensemble.contains(sommet)){
+                for(Sommet sV: sommet.getVoisins()){
+                    if (!ensemble.contains(sV)) {
+                        grapheFusionne.ajouterArete(grapheFusionne.getSommet(sommet.getIndice()), grapheFusionne.getSommet(sV.getIndice()));
+
                     }
                 }
             }
         }
+        for(Sommet sommet2 : ensemble){
+            for(Sommet sommetV : sommet2.getVoisins()){
+                if (!ensemble.contains(sommetV)) {
+                    grapheFusionne.ajouterArete(grapheFusionne.getSommet(sommetFusionne.getIndice()), grapheFusionne.getSommet(sommetV.getIndice()));
 
-        for (Sommet sommet : ensemble){
-            for (Sommet voisin : sommet.getVoisins()){
-                if (!ensemble.contains(voisin)){
-                    grapheFusionne.ajouterArete(sommetFusionne, voisin);
                 }
             }
         }
@@ -252,8 +263,7 @@ public class Graphe {
         
         if (estCycle()) return true;
         
-
-        if (possedeUnCycle()) return false;
+        else if (possedeUnCycle()) return false;
         
          // il faut qu'il possède 0 (c'est un cylce) ou deux 2 sommets de degré impair(les deux en bout de chaine.)
         int nbSommetsImpairs = 0;
@@ -310,7 +320,7 @@ public class Graphe {
     /**
      * @return true si et seulement si this a un isthme
      */
-    public boolean possedeUnIsthme() { //fait testé
+    public boolean possedeUnIsthme() { //fait testé  A OPTI 
         if (sommets.isEmpty()) {
             return false;
         }
@@ -324,9 +334,12 @@ public class Graphe {
         Set<Set<Sommet>> aretes = getAretes(); // on récupère les arêtes du graphe
         int nbClasseConnexite = getEnsembleClassesConnexite().size();
 
+        if (nbClasseConnexite > 1) return false; // si le graphe est connexe, il n'y a pas d'isthme (un isthme sépare un graphe en deux parties connexes
+
         for(Set<Sommet> e : aretes){ // on parcourt toutes les arêtes
             ArrayList<Sommet> sommet = new ArrayList<>(e);
-
+             
+            if (sommet.get(0).getVoisins().size() == 1 || sommet.get(1).getVoisins().size() == 1) return true; // si un des sommets de l'arête est une feuille, c'est un isthme
             supprimerArete(sommet.get(0),sommet.get(1));
             int classeConnexiteNew = getEnsembleClassesConnexite().size();
             if(classeConnexiteNew > nbClasseConnexite) return true; // si le nombre de classe de connexité augmente, c'est un isthme
@@ -599,7 +612,7 @@ public class Graphe {
      * @return true si et seulement si this possède un sous-graphe isomorphe à {@code g}
      */
     public boolean possedeSousGrapheIsomorphe(Graphe g) {
-        if (g.sommets.size() > this.sommets.size()) {
+        if (g.sommets.size() > this.sommets.size()) {  
             return false;
         }
 
