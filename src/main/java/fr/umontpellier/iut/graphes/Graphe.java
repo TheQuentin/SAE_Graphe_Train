@@ -2,8 +2,6 @@ package fr.umontpellier.iut.graphes;
 
 import java.util.*;
 
-import fr.umontpellier.iut.graphes.Sommet.SommetBuilder;
-
 
 /**
  * Graphe simple non-orienté pondéré représentant le plateau du jeu.
@@ -564,35 +562,40 @@ public class Graphe {
      * Chaque classe de couleur est représentée par un entier (la clé de la Map).
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
-    public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
+    public Map<Integer, Set<Sommet>> getColorationOptimale() {
         Map<Integer, Set<Sommet>> coloration = new HashMap<>();
-        for (int i = 0; i < 4; i++) {
-            coloration.put(i, new HashSet<>());
-        }
+        Set<Sommet> sommetsNonColories = new HashSet<>(sommets);
+        List<Sommet> sommetsTries = new ArrayList<>(sommets);
+        sommetsTries.sort(Comparator.comparingInt(Sommet::getIndice));
+        sommetsTries.sort(Comparator.comparingInt(s -> -s.getVoisins().size()));
 
-        List<Sommet> sommets = new ArrayList<>(this.sommets);
-        sommets.sort((s1, s2) -> s2.getVoisins().size() - s1.getVoisins().size());
+        while (!sommetsNonColories.isEmpty()) {
+            Sommet sommet = sommetsTries.get(0);
+            sommetsTries.remove(sommet);
+            sommetsNonColories.remove(sommet);
+            int couleur = 0;
 
-        for (Sommet sommet : sommets) {
-            Set<Integer> couleursInterdites = new HashSet<>();
-            for (Sommet voisin : sommet.getVoisins()) {
-                for (int i = 0; i < 4; i++) {
-                    if (coloration.get(i).contains(voisin)) {
-                        couleursInterdites.add(i);
+            while (true) {
+                boolean couleurValide = true;
+                for (Sommet voisin : sommet.getVoisins()) {
+                    if (coloration.containsKey(couleur) && coloration.get(couleur).contains(voisin)) {
+                        couleurValide = false;
+                        break;
                     }
                 }
-            }
-
-            int couleur = 0;
-            while (couleursInterdites.contains(couleur)) {
+                if (couleurValide) {
+                    if (!coloration.containsKey(couleur)) {
+                        coloration.put(couleur, new HashSet<>());
+                    }
+                    coloration.get(couleur).add(sommet);
+                    break;
+                }
                 couleur++;
             }
-
-            coloration.get(couleur).add(sommet);
         }
-
         return coloration;
     }
+
 
     /**
      * @return true si et seulement si this possède un sous-graphe complet d'ordre {@code k}

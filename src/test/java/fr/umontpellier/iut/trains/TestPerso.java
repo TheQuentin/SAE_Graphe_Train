@@ -1108,7 +1108,7 @@ public class TestPerso {
         Graphe graphe = jeu.getGraphe();
 
         Map<Integer, Set<Sommet>> coloration = graphe.getColorationGloutonne();
-        assertEquals(4, coloration.size());
+        assertEquals(4, coloration.size()); // 4 couleurs utilisées car le théorème des 4 couleurs est vérifié (graphe planaire)
     }
 }
 
