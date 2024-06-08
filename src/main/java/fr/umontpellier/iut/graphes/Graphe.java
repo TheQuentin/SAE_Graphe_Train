@@ -565,29 +565,33 @@ public class Graphe {
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
     public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
-            Map<Integer, Set<Sommet>> coulEtSommets = new HashMap<>();
+        Map<Integer, Set<Sommet>> coloration = new HashMap<>();
+        for (int i = 0; i < 4; i++) {
+            coloration.put(i, new HashSet<>());
+        }
 
-            for(int i = 0; i<4; i++){
-                coulEtSommets.put(i, new HashSet<>());
-            }
+        List<Sommet> sommets = new ArrayList<>(this.sommets);
+        sommets.sort((s1, s2) -> s2.getVoisins().size() - s1.getVoisins().size());
 
-            List<Sommet> pasColories = new ArrayList<>(sommets);
-
-            for(Sommet sommet : pasColories){
-                boolean[] possible = new boolean[4];
-
-                for(Sommet voisin : sommet.getVoisins()){
-                    for(int i=0; i<4; i++){
-                        if(coulEtSommets.get(i).contains(voisin)) possible[i] = false; // si un voisin est de la couleur i, on ne peut donc pas colorier s en i
-                    }
-                }
-                for(int i=0; i<4; i++){
-                    if(possible[i]){ // si on peut colorier le sommet en i
-                        coulEtSommets.get(i).add(sommet); // on ajoute le sommet à la couleur i
+        for (Sommet sommet : sommets) {
+            Set<Integer> couleursInterdites = new HashSet<>();
+            for (Sommet voisin : sommet.getVoisins()) {
+                for (int i = 0; i < 4; i++) {
+                    if (coloration.get(i).contains(voisin)) {
+                        couleursInterdites.add(i);
                     }
                 }
             }
-            return coulEtSommets;
+
+            int couleur = 0;
+            while (couleursInterdites.contains(couleur)) {
+                couleur++;
+            }
+
+            coloration.get(couleur).add(sommet);
+        }
+
+        return coloration;
     }
 
     /**
