@@ -2,8 +2,6 @@ package fr.umontpellier.iut.graphes;
 
 import java.util.*;
 
-import fr.umontpellier.iut.graphes.Sommet.SommetBuilder;
-
 
 /**
  * Graphe simple non-orienté pondéré représentant le plateau du jeu.
@@ -591,31 +589,40 @@ public class Graphe {
      * Chaque classe de couleur est représentée par un entier (la clé de la Map).
      * Pré-requis : le graphe est issu du plateau du jeu Train (entre autres, il est planaire).
      */
-    public Map<Integer, Set<Sommet>> getColorationPropreOptimale() {
-            Map<Integer, Set<Sommet>> coulEtSommets = new HashMap<>();
+    public Map<Integer, Set<Sommet>> getColorationOptimale() {
+        Map<Integer, Set<Sommet>> coloration = new HashMap<>();
+        Set<Sommet> sommetsNonColories = new HashSet<>(sommets);
+        List<Sommet> sommetsTries = new ArrayList<>(sommets);
+        sommetsTries.sort(Comparator.comparingInt(Sommet::getIndice));
+        sommetsTries.sort(Comparator.comparingInt(s -> -s.getVoisins().size()));
 
-            for(int i = 0; i<4; i++){
-                coulEtSommets.put(i, new HashSet<>());
-            }
+        while (!sommetsNonColories.isEmpty()) {
+            Sommet sommet = sommetsTries.get(0);
+            sommetsTries.remove(sommet);
+            sommetsNonColories.remove(sommet);
+            int couleur = 0;
 
-            List<Sommet> pasColories = new ArrayList<>(sommets);
-
-            for(Sommet sommet : pasColories){
-                boolean[] possible = new boolean[4];
-
-                for(Sommet voisin : sommet.getVoisins()){
-                    for(int i=0; i<4; i++){
-                        if(coulEtSommets.get(i).contains(voisin)) possible[i] = false; // si un voisin est de la couleur i, on ne peut donc pas colorier s en i
+            while (true) {
+                boolean couleurValide = true;
+                for (Sommet voisin : sommet.getVoisins()) {
+                    if (coloration.containsKey(couleur) && coloration.get(couleur).contains(voisin)) {
+                        couleurValide = false;
+                        break;
                     }
                 }
-                for(int i=0; i<4; i++){
-                    if(possible[i]){ // si on peut colorier le sommet en i
-                        coulEtSommets.get(i).add(sommet); // on ajoute le sommet à la couleur i
+                if (couleurValide) {
+                    if (!coloration.containsKey(couleur)) {
+                        coloration.put(couleur, new HashSet<>());
                     }
+                    coloration.get(couleur).add(sommet);
+                    break;
                 }
+                couleur++;
             }
-            return coulEtSommets;
+        }
+        return coloration;
     }
+
 
     /**
      * @return true si et seulement si this possède un sous-graphe complet d'ordre {@code k}

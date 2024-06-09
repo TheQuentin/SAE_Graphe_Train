@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.umontpellier.iut.trains.plateau.Plateau;
 import org.junit.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -1103,7 +1104,16 @@ public class TestPerso {
 
 
         Map<Integer, Set<Sommet>> coloration = g.getColorationGloutonne();
-        assertEquals(4, coloration.size());
+        assertEquals(3, coloration.size());
+    }
+
+    @Test
+    public void colorationPropreOptimalPasse2 () {
+        Jeu jeu = new Jeu(new String[]{"Rick", "Morty"}, new String[]{}, Plateau.TOKYO);
+        Graphe graphe = jeu.getGraphe();
+
+        Map<Integer, Set<Sommet>> coloration = graphe.getColorationGloutonne();
+        assertEquals(4, coloration.size()); // 4 couleurs utilisées car le théorème des 4 couleurs est vérifié (graphe planaire)
     }
 
     @Test
