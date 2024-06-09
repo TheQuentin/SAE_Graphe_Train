@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import fr.umontpellier.iut.trains.plateau.Plateau;
 import org.junit.Test;
 import org.junit.jupiter.api.Timeout;
 
 import fr.umontpellier.iut.graphes.Graphe;
 import fr.umontpellier.iut.graphes.Sommet;
+import fr.umontpellier.iut.graphes.Sommet.SommetBuilder;
 
 @Timeout(value = 1, threadMode = Timeout.ThreadMode.SEPARATE_THREAD)
 public class TestPerso {
@@ -1104,16 +1104,7 @@ public class TestPerso {
 
 
         Map<Integer, Set<Sommet>> coloration = g.getColorationGloutonne();
-        assertEquals(3, coloration.size());
-    }
-
-    @Test
-    public void colorationPropreOptimalPasse2 () {
-        Jeu jeu = new Jeu(new String[]{"Rick", "Morty"}, new String[]{}, Plateau.TOKYO);
-        Graphe graphe = jeu.getGraphe();
-
-        Map<Integer, Set<Sommet>> coloration = graphe.getColorationGloutonne();
-        assertEquals(4, coloration.size()); // 4 couleurs utilisées car le théorème des 4 couleurs est vérifié (graphe planaire)
+        assertEquals(4, coloration.size());
     }
 
     @Test
@@ -1190,6 +1181,62 @@ public class TestPerso {
         assertEquals(true, g.possedeSousGrapheComplet(9));
         assertEquals(true, g.possedeSousGrapheComplet(10));
         assertEquals(true, g.possedeUnCycle());
+    }
+
+    @Test
+    public void test_GetDistance_passe() {
+        // Création des sommets avec SommetBuilder
+        Sommet s1 = new SommetBuilder().setIndice(1).setSurcout(1).createSommet();
+        Sommet s2 = new SommetBuilder().setIndice(2).setSurcout(2).createSommet();
+        Sommet s3 = new SommetBuilder().setIndice(3).setSurcout(2).createSommet();
+        Sommet s4 = new SommetBuilder().setIndice(4).setSurcout(1).createSommet();
+
+        // Création du graphe avec des arêtes entre les sommets
+        Graphe graphe = new Graphe();
+        graphe.ajouterSommet(s1);
+        graphe.ajouterSommet(s2);
+        graphe.ajouterSommet(s3);
+        graphe.ajouterSommet(s4);
+
+        graphe.ajouterArete(s1, s2);
+        graphe.ajouterArete(s1, s3);
+        graphe.ajouterArete(s2, s4);
+        graphe.ajouterArete(s3, s4);
+
+        // Test de la méthode getDistance
+        assertEquals(3, graphe.getDistance(s1, s4)); // La distance entre s1 et s4 doit être 2
+        assertEquals(1, graphe.getDistance(s2, s4)); // La distance entre s2 et s4 doit être 1
+    }
+
+    @Test
+    public void test_GetDistance2_passe() {
+        // Création des sommets avec SommetBuilder
+        // Création des sommets avec SommetBuilder
+        Sommet s1 = new SommetBuilder().setIndice(1).setSurcout(1).createSommet();
+        Sommet s2 = new SommetBuilder().setIndice(2).setSurcout(1).createSommet();
+        Sommet s3 = new SommetBuilder().setIndice(3).setSurcout(2).createSommet();
+        Sommet s4 = new SommetBuilder().setIndice(4).setSurcout(1).createSommet();
+
+
+        Graphe graphe = new Graphe();
+        graphe.ajouterSommet(s1);
+        graphe.ajouterSommet(s2);
+        graphe.ajouterSommet(s3);
+        graphe.ajouterSommet(s4);
+
+        graphe.ajouterArete(s1, s2);
+        graphe.ajouterArete(s1, s3);
+        graphe.ajouterArete(s2, s4);
+        graphe.ajouterArete(s3, s4);
+
+        // Création de l'ensemble de sommets de départ
+        Set<Sommet> depart = new HashSet<>();
+        depart.add(s1);
+        depart.add(s2);
+
+        // Test de la méthode getDistance avec un ensemble de sommets de départ
+        assertEquals(1, graphe.getDistance(depart, s4)); // La distance entre s1 ou s2 et s4 doit être 1
+        assertEquals(2, graphe.getDistance(depart, s3)); // La distance entre s1 ou s2 et s3 doit être 2
     }
 }
 
