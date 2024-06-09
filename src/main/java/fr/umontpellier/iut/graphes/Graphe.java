@@ -222,9 +222,6 @@ public class Graphe {
      * @param i l'entier correspondant à l'indice du sommet à ajouter dans le graphe
      */
     public boolean ajouterSommet(int i) { //fait testé
-        if(getSommet(i) != null){
-            return false;
-        }
         Sommet sommetAdd = new Sommet(i);
         return sommets.add(sommetAdd);
     }
@@ -310,17 +307,47 @@ public class Graphe {
     /**
      * @return true si et seulement si this a au moins un cycle. On considère que le graphe vide n'est pas un cycle.
      */
-    public boolean possedeUnCycle() { //fait testé
-        if (sommets.isEmpty()) {
-            return false;
+    public boolean possedeUnCycle() {
+        if (sommets.isEmpty()) return false;
+    
+        Set<Sommet> sommetsE = new HashSet<>();
+        Set<Sommet> sommetsV = new HashSet<>();
+        
+    
+        for (Sommet sommet : sommets) {
+            if (!sommetsV.contains(sommet)) {
+                Queue<Sommet> queue = new LinkedList<>();
+                queue.add(sommet);
+    
+                while (!queue.isEmpty()) {
+                    Sommet courant = queue.poll();
+    
+                    if (sommetsE.contains(courant)) {
+                        return true;
+                    }
+    
+                    sommetsE.add(courant);
+                    sommetsV.add(courant);
+    
+                    for (Sommet voisin : courant.getVoisins()) {
+                        if (!sommetsV.contains(voisin)) {
+                            queue.add(voisin);
+                        }
+                    }
+                }
+    
+                sommetsE.clear();
+            }
         }
-        return getNbAretes() > getNbSommets()-1;
+    
+        return false; 
     }
+     
 
     /**
      * @return true si et seulement si this a un isthme
      */
-    public boolean possedeUnIsthme() { //fait testé  A OPTI 
+    public boolean possedeUnIsthme() { //fait testé 
         if (sommets.isEmpty()) {
             return false;
         }

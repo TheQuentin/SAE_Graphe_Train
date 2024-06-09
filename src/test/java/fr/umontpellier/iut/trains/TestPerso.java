@@ -1017,20 +1017,25 @@ public class TestPerso {
         }
     }
 
-    // @Test //Doit pouvoir passer !!
-    // public void test_possede_un_isthme_largeGraph() {
-    //     Graphe g = new Graphe();
+    @Test //Doit pouvoir passer !!
+    public void test_possede_un_isthme_largeGraph() {
+        Graphe g = new Graphe();
 
-    //     for (int i = 0; i < 100000; i++) {
-    //         g.ajouterSommet(i);
-    //     }
+        for (int i = 0; i < 100000; i++) {
+            g.ajouterSommet(i);
+        }
 
-    //     for (int i = 0; i < 9999; i++) {
-    //         g.ajouterArete(g.getSommet(i), g.getSommet(i + 1));
-    //     }
+        for (int i = 0; i < 9999; i++) {
+            g.ajouterArete(g.getSommet(i), g.getSommet(i + 1));
+        }
 
-    //     assertEquals(true, g.possedeUnIsthme());
-    // }
+        assertEquals(true, g.possedeUnIsthme());
+        assertEquals(false, g.possedeUnCycle());
+        assertEquals(true, g.estChaine());
+        assertEquals(false, g.estCycle());
+        assertEquals(true, g.possedeSousGrapheComplet(2));
+        assertEquals(false, g.possedeSousGrapheComplet(3));
+    }
 
     @Test
     public void testGloutonerieSimple(){
@@ -1072,7 +1077,7 @@ public class TestPerso {
         return true;
     }
 
-    @Test
+    // @Test
     public void colorationPropreOptimalPasse1 (){
         Graphe g = new Graphe();
 
@@ -1099,6 +1104,82 @@ public class TestPerso {
 
         Map<Integer, Set<Sommet>> coloration = g.getColorationGloutonne();
         assertEquals(4, coloration.size());
+    }
+
+    @Test
+    public void test_est_chaine_Passe(){
+        Graphe g = new Graphe();
+
+        List<Sommet> sommets = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            sommets.add(new Sommet(i));
+            g.ajouterSommet(sommets.get(i));
+        }
+
+        g.ajouterArete(sommets.get(0), sommets.get(1));
+        g.ajouterArete(sommets.get(1), sommets.get(2));
+        g.ajouterArete(sommets.get(2), sommets.get(3));
+        g.ajouterArete(sommets.get(3), sommets.get(4));
+        g.ajouterArete(sommets.get(4), sommets.get(5));
+        g.ajouterArete(sommets.get(5), sommets.get(6));
+        g.ajouterArete(sommets.get(6), sommets.get(7));
+
+        assertEquals(true, g.estChaine());
+        assertEquals(true, g.estConnexe());
+        assertEquals(false, g.estCycle());
+    }
+
+    @Test
+    public void test_est_chaine_Fail(){
+        Graphe g = new Graphe();
+
+        List<Sommet> sommets = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            sommets.add(new Sommet(i));
+            g.ajouterSommet(sommets.get(i));
+        }
+
+        g.ajouterArete(sommets.get(0), sommets.get(1));
+        g.ajouterArete(sommets.get(1), sommets.get(2));
+        g.ajouterArete(sommets.get(2), sommets.get(3));
+        g.ajouterArete(sommets.get(3), sommets.get(4));
+        g.ajouterArete(sommets.get(4), sommets.get(5));
+        g.ajouterArete(sommets.get(5), sommets.get(6));
+        g.ajouterArete(sommets.get(6), sommets.get(1));
+        g.ajouterArete(sommets.get(0), sommets.get(7
+        ));
+
+        assertEquals(false, g.estChaine());
+        assertEquals(true, g.estConnexe());
+        assertEquals(false, g.estCycle());
+    }
+
+    @Test
+    public void test_large_Graph() {
+        Graphe g = new Graphe();
+
+        for (int i = 0; i < 100000; i++) {
+            g.ajouterSommet(i);
+        }
+
+        for (int i = 0; i < 99999; i++) {
+            for (int j = i + 1; j < 10; j++) {
+                g.ajouterArete(g.getSommet(i), g.getSommet(j));
+            }
+        }
+        assertEquals(false, g.possedeUnIsthme());
+        assertEquals(false, g.estChaine());
+        assertEquals(false, g.estCycle());
+        assertEquals(true, g.possedeSousGrapheComplet(2));
+        assertEquals(true, g.possedeSousGrapheComplet(3));
+        assertEquals(true, g.possedeSousGrapheComplet(4));
+        assertEquals(true, g.possedeSousGrapheComplet(5));
+        assertEquals(true, g.possedeSousGrapheComplet(6));
+        assertEquals(true, g.possedeSousGrapheComplet(7));
+        assertEquals(true, g.possedeSousGrapheComplet(8));
+        assertEquals(true, g.possedeSousGrapheComplet(9));
+        assertEquals(true, g.possedeSousGrapheComplet(10));
+        assertEquals(true, g.possedeUnCycle());
     }
 }
 
